@@ -1,0 +1,17 @@
+{
+  "name": "site",
+  "version": "1.0.0",
+  "description": "Web Server Term Project",
+  "main": "controller.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Austin Cauley, MorningStar Cornell",
+  "license": "ISC",
+  "dependencies": {
+    "croppie": "^2.6.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6"
+  }
+}
