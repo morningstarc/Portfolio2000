@@ -6,27 +6,28 @@ const password = 'password';
 const dbHost = 'localhost';
 const dbPort = 27017;
 const dbName = 'wsp';
+const collectionName = 'users';
 const dbURL = `mongodb://${username}:${password}@${dbHost}:${dbPort}/?authSource=${dbName}`;
 //const dbURL = 'mongodb://user:password@localhost:27017/?authSource=wsp, { useNewUrlParser: true }';
 
 let dbclient;
+let userCollection;
 
-function startDBandApp(app, PORT) {
-    MongoClient.connect(dbURL, {
-            poolSize: 30,
-            useNewURLParser: true
+function startDBandApp(app, PORT){
+    MongoClient.connect(dbURL, {poolSize: 30, useNewURLParser: true})
+    .then(client => {
+        dbclient = client;
+        userCollection = client.db(dbName).collection(collectionName);
+        app.locals.userCollection = userCollection;
+        app.locals.ObjectID = ObjectID;
+        app.listen(PORT, () => {
+            console.log(`Server is running at ${PORT}`);
         })
-        .then(client => {
-            dbclient = client;
-            app.locals.ObjectID = ObjectID;
-            app.listen(PORT, () => {
-                console.log(`Server is running at ${PORT}`);
-            })
-
-        })
-        .catch(err => {
-            console.log('DB connecton error: ', err)
-        });
+        
+    })
+   .catch(err => {
+       console.log('DB connecton error: ', err)
+   });
 }
 
 process.on('SIGINT', () => {
@@ -35,7 +36,4 @@ process.on('SIGINT', () => {
     process.exit();
 })
 
-module.exports = {
-    startDBandApp,
-    ObjectID,
-};
+module.exports = {startDBandApp, ObjectID, userCollection};
