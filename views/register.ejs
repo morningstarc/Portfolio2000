@@ -8,7 +8,7 @@
 
     <% include ./partials/header %>
 
-    <title>Signup</title>
+    <title>Register</title>
     <link rel="stylesheet" href="../public/css/site.css">
 </head>
 
@@ -28,7 +28,7 @@
                             <%= flash_message %>
                         </div>
                         <% } %>
-                        <form action="/signup" method="POST">
+                        <form action="/register" method="POST">
                             <div class="form-group">
                                     <label for="firstname"><p class="label">First Name</p></label>
                                     <input type="text" class="form-control" name="firstname" id="firstname"
@@ -51,7 +51,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="confirmpassword"><p class="label">Confirm Password</p></label>
-                                <input type="confirmpassword" class="form-control" name="confirmpassword" id="confirmpassword"
+                                <input type="password" class="form-control" name="confirmpassword" id="confirmpassword"
                                     placeholder="Confirm password">
                             </div>
                             <button type="submit" class="btn btn-light">Create Account</button>

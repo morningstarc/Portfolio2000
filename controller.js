@@ -3,6 +3,7 @@ const app = express();
 const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
+const accountConfig = require('./accountConfig');
 const PORT = process.env.PORT || 3000;
 
 //EJS Template Views
@@ -30,6 +31,8 @@ app.use((req, res, next) => {
 
 app.use(flash());
 
+accountConfig.config(app);
+
 //database
 const database = require('./database.js');
 database.startDBandApp(app, PORT);
@@ -52,6 +55,11 @@ app.get('/updateProfile', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register', {flash_message: req.flash("flash_message")});
 });
+
+app.post('/register', accountConfig.passport.authenticate(
+    'signupStrategy',
+    {successRedirect: '/', failureRedirect: '/register', failureFlash: true}
+));
 
 app.get('/', (req, res) => {
     res.render('home')
