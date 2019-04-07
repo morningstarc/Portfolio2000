@@ -11,12 +11,21 @@
                 <span class="sr-only">(current)</span>
               </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/users">Users</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/projects">Projects</a>
-        </li>
+        <% if (isAuthenticated) { %> 
+          <li class="nav-item">
+            <a class="nav-link" href="/users">Profile</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/updateProfile">Update Profile</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/projects">Projects</a>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/register">Register</a>
+          </li>
+        <% } %>
       </ul>
     </div>
   </div>

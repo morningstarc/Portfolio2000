@@ -9,10 +9,12 @@
   "author": "Austin Cauley, MorningStar Cornell",
   "license": "ISC",
   "dependencies": {
+    "connect-flash": "^0.1.1",
     "croppie": "^2.6.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
-    "mongo": "^0.1.0"
+    "mongo": "^0.1.0",
+    "passport": "^0.4.0"
   }
 }

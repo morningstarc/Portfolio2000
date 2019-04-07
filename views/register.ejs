@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <% include ./partials/header %>
+
+    <title>Signup</title>
+    <link rel="stylesheet" href="../public/css/site.css">
+</head>
+
+<body class="d-flex flex-column">
+    <div id="page-content">
+        <header class="masthead">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center">
+                    <div class="col-12 text-center">
+                        <h1>
+                            <p style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; color: #fff;">
+                                Create an Account
+                            </p>
+                        </h1>
+                        <% if (flash_message.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= flash_message %>
+                        </div>
+                        <% } %>
+                        <form action="/signup" method="POST">
+                            <div class="form-group">
+                                    <label for="firstname"><p class="label">First Name</p></label>
+                                    <input type="text" class="form-control" name="firstname" id="firstname"
+                                        placeholder="Enter first name">
+                            </div>
+                            <div class="form-group">
+                                    <label for="lastname"><p class="label">Last Name</p></label>
+                                    <input type="text" class="form-control" name="lastname" id="lastname"
+                                        placeholder="Enter last name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><p class="label">Email address</p></label>
+                                <input type="email" class="form-control" name="email" id="email"
+                                    aria-describedby="emailHelp" placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password"><p class="label">Password</p></label>
+                                <input type="password" class="form-control" name="password" id="password"
+                                    placeholder="Enter password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmpassword"><p class="label">Confirm Password</p></label>
+                                <input type="confirmpassword" class="form-control" name="confirmpassword" id="confirmpassword"
+                                    placeholder="Confirm password">
+                            </div>
+                            <button type="submit" class="btn btn-light">Create Account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+    <% include ./partials/scripts %>
+</body>
+
+</html>
