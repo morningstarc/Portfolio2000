@@ -43,7 +43,7 @@ function config(app) {
                 .then(users => {
                     if (users.length != 0 ) {
                         return done(null, false, req.flash("flash_message", "Email already in use"));
-                    } else if (req.body.password === req.body.comparepassword) {
+                    } else if (req.body.password !== req.body.confirmpassword) {
                         return done(null, false, req.flash("flash_message", "Passwords do not match"));
                     } 
                     else {
