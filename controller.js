@@ -12,27 +12,60 @@ app.use(express.urlencoded({
     extended: false
 }));
 
+
+
+//database
+const database = require('./database.js');
+database.startDBandApp(app, PORT);
+
+//session
 app.use(session({
     secret: 'reallysupersecretstring@#$77',
     saveUninitialized: false,
     resave: false,
 }));
 
-//database
-const database = require('./database.js');
-database.startDBandApp(app, PORT);
+///Passport///
+const passConfig = require('./passConfig.js');
+passConfig.config(app);
+
+const flash = require('connect-flash')
+app.use(flash())
 
 
-//Routes
-
-app.get('/users', (req, res) => {
-    res.render('users')
-});
-
-app.get('/projects', (req, res) => {
-    res.render('projects')
-});
+///ROUTES ///
 
 app.get('/', (req, res) => {
+    res.render('login', {
+        flash_message: req.flash('flash_message')
+    })
+})
+
+app.post('/login', passConfig.passport.authenticate(
+    'localLogin', {
+        successRedirect: '/home',
+        failureRedirect: '/login',
+        failureFlash: true
+    }
+))
+
+app.get('/home', (req, res) => {
     res.render('home')
-});
+})
+
+app.get('/logout', (req, res) => {
+    req.logout()
+    res.redirect('/')
+})
+
+
+/////AUTH /////
+
+function auth(req, res, next) {
+    const user = req.user
+    if (!user) {
+        res.render('401')
+    } else {
+        next()
+    }
+}
