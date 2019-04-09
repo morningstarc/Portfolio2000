@@ -13,7 +13,7 @@
             const firstname = document.forms["updateForm"]["firstname"].value;
             const lastname = document.forms["updateForm"]["lastname"].value;
 
-            if (!parseString(firstname) || !parseString(lastname)) {
+            if (firstname.trim() == "" || lastname.trim() == "") {
                 alert("You must have a first and last name");
                 return false;
             }
@@ -31,29 +31,28 @@
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
                         <div class="col-12 text-center">
-                            <h1>
-                                <p style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; color: #fff;">
-                                    Create an Account
+                                <p style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; color: #fff; outline-color: #000; font-size: 56pt">
+                                    Update Account Information
                                 </p>
-                            </h1>
                             <br>
                             <form action="/updateProfile" method="POST" id="updateForm"
                                 onsubmit="return validateForm()">
                                 <div class="col-sm-3 my-1" id="horizontalAlign">
                                     <label for="title"><p class="label">First Name</p></label>
                                     <input type="text" class="form-control" name="firstname" id="firstname"
-                                        placeholder="You should not be seeing this" value="<%= user.firstname%>">
-
+                                        placeholder="Enter your first name" value="<%= user.firstname%>">
                                 </div>
+
+                                <br>
 
                                 <div class="col-sm-3 my-1" id="horizontalAlign">
-                                    <label for="title"><p class="label">Last Name</p>></label>
+                                    <label for="title"><p class="label">Last Name</p></label>
                                     <input type="text" class="form-control" name="lastname" id="lastname"
-                                        placeholder="You should not be seeing this" value="<%= user.lastname%>">
-
+                                        placeholder="Enter your last name" value="<%= user.lastname%>">
                                 </div>
+                                <br>
                                 <input type="hidden" name="_id" value="<%= user._id%>">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-light">Submit</button>
                             </form>
                         </div>
                     </div>

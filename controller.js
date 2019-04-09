@@ -41,11 +41,11 @@ database.startDBandApp(app, PORT);
 //Routes
 
 app.get('/users', (req, res) => {
-    res.render('users')
+    res.render('users', {user: req.user})
 });
 
 app.get('/projects', (req, res) => {
-    res.render('projects')
+    res.render('projects', {user: req.user})
 });
 
 app.get('/updateProfile', (req, res) => {

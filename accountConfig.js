@@ -45,13 +45,15 @@ function config(app) {
                         return done(null, false, req.flash("flash_message", "Email already in use"));
                     } else if (req.body.password !== req.body.confirmpassword) {
                         return done(null, false, req.flash("flash_message", "Passwords do not match"));
-                    } 
+                    } else if (req.body.firstname === "" || req.body.lastname === "") {
+                        return done(null, false, req.flash("flash_message", "You must enter your first and last name"));
+                    }
                     else {
                         const hashedPassword = passwordcrypto.hashPassword(password);
                         const user = {firstname: req.body.firstname, lastname: req.body.lastname, email, password: hashedPassword};
                         app.locals.usersCollection.insertOne(user)
                             .then(result => {
-                                return done(null, user, req.flash("flash_message", "You account is created. Login now!"))
+                                return done(null, user, req.flash("flash_message", "Account Creation Successful!"))
                             })
                             .catch(error => {
                                 return done(error);
