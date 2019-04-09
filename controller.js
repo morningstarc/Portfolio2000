@@ -29,8 +29,7 @@ app.use(session({
 }));
 
 ///Passport///
-const passConfig = require('./passConfig.js');
-passConfig.config(app);
+accountConfig.config(app);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -39,15 +38,8 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use(flash());
-
 accountConfig.config(app);
 
-//database
-const database = require('./database.js');
-database.startDBandApp(app, PORT);
-
-const flash = require('connect-flash')
 app.use(flash())
 
 
@@ -59,7 +51,7 @@ app.get('/', (req, res) => {
     })
 })
 
-app.post('/login', passConfig.passport.authenticate(
+app.post('/login', accountConfig.passport.authenticate(
     'localLogin', {
         successRedirect: '/home',
         failureRedirect: '/login',
