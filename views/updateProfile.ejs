@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <% include ./partials/header %>
+
+    <script>
+        function validateForm() {
+            const firstname = document.forms["updateForm"]["firstname"].value;
+            const lastname = document.forms["updateForm"]["lastname"].value;
+
+            if (!parseString(firstname) || !parseString(lastname)) {
+                alert("You must have a first and last name");
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+    <title>Update Profile</title>
+</head>
+
+<body>
+    <div class="d-flex flex-column">
+        <div id="page-content">
+            <header class="masthead">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-12 text-center">
+                            <h1>
+                                <p style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; color: #fff;">
+                                    Create an Account
+                                </p>
+                            </h1>
+                            <br>
+                            <form action="/updateProfile" method="POST" id="updateForm"
+                                onsubmit="return validateForm()">
+                                <div class="col-sm-3 my-1" id="horizontalAlign">
+                                    <label for="title"><p class="label">First Name</p></label>
+                                    <input type="text" class="form-control" name="firstname" id="firstname"
+                                        placeholder="You should not be seeing this" value="<%= user.firstname%>">
+
+                                </div>
+
+                                <div class="col-sm-3 my-1" id="horizontalAlign">
+                                    <label for="title"><p class="label">Last Name</p>></label>
+                                    <input type="text" class="form-control" name="lastname" id="lastname"
+                                        placeholder="You should not be seeing this" value="<%= user.lastname%>">
+
+                                </div>
+                                <input type="hidden" name="_id" value="<%= user._id%>">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+                    <% include ./partials/scripts %>
+</body>
+
+</html>
