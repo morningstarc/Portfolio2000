@@ -15,12 +15,22 @@ app.use(express.urlencoded({
     extended: false
 }));
 
+
+
+//database
+const database = require('./database.js');
+database.startDBandApp(app, PORT);
+
+//session
 app.use(session({
     secret: 'reallysupersecretstring@#$77',
     saveUninitialized: false,
     resave: false,
 }));
 
+///Passport///
+const passConfig = require('./passConfig.js');
+passConfig.config(app);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -37,15 +47,41 @@ accountConfig.config(app);
 const database = require('./database.js');
 database.startDBandApp(app, PORT);
 
+const flash = require('connect-flash')
+app.use(flash())
 
-//Routes
 
-app.get('/users', (req, res) => {
-    res.render('users', {user: req.user})
+///ROUTES ///
+
+app.get('/', (req, res) => {
+    res.render('login', {
+        flash_message: req.flash('flash_message')
+    })
+})
+
+app.post('/login', passConfig.passport.authenticate(
+    'localLogin', {
+        successRedirect: '/home',
+        failureRedirect: '/login',
+        failureFlash: true
+    }
+))
+
+// app.get('/projects', (req, res) => {
+//     res.render('projects', {user: req.user})
+// })
+
+app.get('/home', (req, res) => {
+    res.render('home', {user: req.user})
+})
+
+app.get('/logout', (req, res) => {
+    req.logout()
+    res.redirect('/')
 });
 
-app.get('/projects', (req, res) => {
-    res.render('projects', {user: req.user})
+app.get('/upload', auth, (req, res) => {
+    res.render('upload', {user: req.user})
 });
 
 app.get('/updateProfile', (req, res) => {
@@ -56,9 +92,9 @@ app.get('/updateProfile', (req, res) => {
                     throw `Found ${users.length} users for EDIT`
                 }
                 res.render("updateProfile", {user: users[0]})
+                //res.render("errorPage", {source: "/admin/update", error})
             })
             .catch(error => {
-                //res.render("errorPage", {source: "/admin/update", error})
             });
 });
 
@@ -67,11 +103,11 @@ app.post('/updateProfile', auth, (req, res) => {
     const firstname = req.body.firstname
     const lastname = req.body.lastname
 
-    const query = {_id: app.locals.ObjectID(_id)}
     const newValue = {$set: {firstname, lastname}}
+    const query = {_id: app.locals.ObjectID(_id)}
 
-    app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
+    app.locals.usersCollection.updateOne(query, newValue)
             res.redirect("/")
         })
         .catch(error => {
@@ -87,22 +123,37 @@ app.post('/register', accountConfig.passport.authenticate(
     'signupStrategy',
     {successRedirect: '/', failureRedirect: '/register', failureFlash: true}
 ));
+app.post('/upload', auth, (req, res) => {
+        //upload to database
+    const project = {
+        user: req.user._id,
+        name: req.body.title,
+        type: req.body.type,
+        github: req.body.github,
+        link: req.body.link,
+        code: req.body.code
+    };
+    
+    app.locals.projectCollection.insertOne(project)
+        .then(result => {
+            res.redirect('home')
+        })
+        .catch(error => {
+            res.render('errorPage', {
+                message: 'project failed to upload to db'
+            })
+    })
+})
 
-app.get('/', (req, res) => {
+
+
+/////AUTH /////
+
+function auth(req, res, next) {
     const user = req.user
     if (!user) {
-        res.render('home')
+        res.render('401')
     } else {
-        res.render('home', {user})
-    }
-});
-
-//Utility functions
-function auth(req, res, next) {
-    const user = req.user;
-    if (!user) {
-        //res.render("401");
-    } else {
-        next();
+        next()
     }
 }

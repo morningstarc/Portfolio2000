@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <% include ./partials/header%>
+
+    <title>Web Server EX 9</title>
+   
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+  </head>
+  <% include ./partials/nav%>
+
+  <body>
+<div class="content">
+ <div class="jumbotron" style="margin: 5px">
+      <div class="container">
+        <h1>Please sign in</h1>
+        
+        </div>
+      
+      </div>
+</div>
+
+<div class="mx-auto" style="width: 320px;">
+<%if (flash_message.length > 0) { %>
+        <div class="alert alert-warning" role="alert">
+          <%=flash_message%>
+          </div>
+  <%}%>
+ <form class="form-signin" action="/login" method="POST">
+  
+  <label for="email">Email Address</label>
+  <input type="email" id="email" name="email" class="form-control" placeholder="User Name" required autofocus>
+  <label for="password" >Password</label>
+  <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+  <button class="btn btn-lg btn-secondary btn-block" type="submit">Sign in</button>
+</form>
+
+
+</div>
+ <% include ./partials/scripts%>
+
+  </body>
+</html>
