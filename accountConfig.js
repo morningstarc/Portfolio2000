@@ -76,21 +76,23 @@ function config(app) {
 
 function userSerialDeserial(app) {
     passport.serializeUser((user, done) => {
-        done(null, user._id);
-    });
+        done(null, user._id)
+    })
     passport.deserializeUser((serial_user, done) => {
-        app.locals.usersCollection.find({_id: app.locals.ObjectID(serial_user)}).toArray()
+        app.locals.userCollection.find({
+                _id: app.locals.ObjectID(serial_user)
+            }).toArray()
             .then(users => {
                 if (users.length != 1) {
-                    throw `Error: found ${users.length} users`;
+                    throw `Error found ${users.length} users`
                 } else {
-                    done(null, users[0]);
+                    done(null, users[0])
                 }
             })
             .catch(error => {
-                return done(error);
-            });
-    });
+                return done(error)
+            })
+    })
 }
 
 module.exports = {config, passport};
