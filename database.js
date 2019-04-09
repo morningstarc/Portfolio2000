@@ -18,6 +18,8 @@ function startDBandApp(app, PORT) {
         })
         .then(client => {
             dbclient = client;
+            usersCollection = client.db(dbName).collection("users");
+            app.locals.usersCollection = usersCollection;
             app.locals.ObjectID = ObjectID;
             app.listen(PORT, () => {
                 console.log(`Server is running at ${PORT}`);
