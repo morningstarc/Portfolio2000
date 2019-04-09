@@ -8,33 +8,37 @@ function config(app) {
     app.use(passport.session());
 
     userSerialDeserial(app);
-
-    const localLogin = new LocalStrategy(
-        {usernameField: "email", passwordField: "password", passReqToCallback: true},
-        (req, email, password, done) => {
-            console.log("passport strategy is called");
-            app.locals.usersCollection.find({email}).toArray()
-                .then(users => {
-                    if (users.length != 1) {
-                        console.log("passport invalid email != 1");
-                        return done(null, false, req.flash("flash_message", "Invalid Email"));
+    const localLogin = new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true
+    },
+    (req, email, password, done) => {
+        console.log('password strategy is called')
+        app.locals.userCollection.find({
+                email
+            }).toArray()
+            .then(users => {
+                if (users.length != 1) {
+                    console.log('passport invalid email !=1')
+                    return done(null, false, req.flash('flash_message', 'invalid email'))
+                } else {
+                    const user = users[0]
+                    if (passwordcrypto.verifyPassword(password, user)) {
+                        console.log('passport user validated')
+                        return done(null, user)
                     } else {
-                        const user = users[0];
-                        if (passwordcrypto.verifyPassword(password, user)) {
-                            console.log("passport user validated");
-                            return done(null, user);
-                        } else {
-                            console.log("passport is invalid password");
-                            return done(null, false, req.flash("flash_message", "Invalid Password"));
-                        }
+                        console.log('passport password invalid')
+                        return done(null, false, req.flash('flash_message', 'invalid password'))
                     }
-                })
-                .catch(error => {
-                    console.log("find() db error");
-                    return done(error);
-                });
-        }
-    );
+                }
+            })
+            .catch(error => {
+                console.log('find() db error')
+                return done(error)
+            })
+    }
+)
 
     const signupStrategy = new LocalStrategy(
         {usernameField: "email", passwordField: "password", passReqToCallback: true},
