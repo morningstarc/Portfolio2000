@@ -16,7 +16,7 @@ function config(app) {
         },
         (req, email, password, done) => {
             console.log('password strategy is called')
-            app.locals.customerCollection.find({
+            app.locals.userCollection.find({
                     email
                 }).toArray()
                 .then(users => {
@@ -49,7 +49,7 @@ function config(app) {
             passReqToCallback: true
         },
         (req, email, password, done) => {
-            app.locals.customerCollection.find({email}).toArray()
+            app.locals.userCollection.find({email}).toArray()
                 .then(users => {
                     if (users.length != 0) {
                         return done(null, false, req.flash('flash_message', 'Email already in use'))
@@ -83,7 +83,7 @@ function userSerialDeserial(app) {
         done(null, user._id)
     })
     passport.deserializeUser((serial_user, done) => {
-        app.locals.customerCollection.find({
+        app.locals.userCollection.find({
                 _id: app.locals.ObjectID(serial_user)
             }).toArray()
             .then(users => {

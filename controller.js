@@ -49,14 +49,45 @@ app.post('/login', passConfig.passport.authenticate(
     }
 ))
 
+// app.get('/projects', (req, res) => {
+//     res.render('projects', {user: req.user})
+// })
+
 app.get('/home', (req, res) => {
-    res.render('home')
+    res.render('home', {user: req.user})
 })
 
 app.get('/logout', (req, res) => {
     req.logout()
     res.redirect('/')
+});
+
+app.get('/upload', auth, (req, res) => {
+    res.render('upload', {user: req.user})
+});
+
+app.post('/upload', auth, (req, res) => {
+        //upload to database
+    const project = {
+        user: req.user._id,
+        name: req.body.title,
+        type: req.body.type,
+        github: req.body.github,
+        link: req.body.link,
+        code: req.body.code
+    };
+    
+    app.locals.projectCollection.insertOne(project)
+        .then(result => {
+            res.redirect('home')
+        })
+        .catch(error => {
+            res.render('errorPage', {
+                message: 'project failed to upload to db'
+            })
+    })
 })
+
 
 
 /////AUTH /////
