@@ -53,7 +53,7 @@ app.get('/', (req, res) => {
         })
     } else {
         res.render('login', {
-            flash_message: rwq.flash('flash_message'), user 
+            flash_message: req.flash('flash_message'), user 
         })
     }
 })
@@ -104,8 +104,8 @@ app.post('/updateProfile', auth, (req, res) => {
 
     const newValue = {$set: {firstname, lastname}}
     const query = {_id: app.locals.ObjectID(_id)}
+    app.locals.userCollection.updateOne(query, newValue)
         .then(result => {
-            app.locals.userCollection.updateOne(query, newValue)
             res.redirect("/")
         })
         .catch(error => {
