@@ -85,7 +85,7 @@ app.get('/upload', auth, (req, res) => {
 
 app.get('/updateProfile', (req, res) => {
         const _id = req.query._id
-        app.locals.userCollection.find({_id: database.ObjectID(_id)}).toArray()
+        app.locals.usersCollection.find({_id: database.ObjectID(_id)}).toArray()
             .then(users => {
                 if (users.length != 1) {
                     throw `Found ${users.length} users for EDIT`
