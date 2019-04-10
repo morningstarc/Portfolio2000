@@ -46,9 +46,16 @@ app.use(flash())
 ///ROUTES ///
 
 app.get('/', (req, res) => {
-    res.render('login', {
-        flash_message: req.flash('flash_message')
-    })
+    const user = req.user;
+    if (!user) {
+        res.render('login', {
+            flash_message: req.flash('flash_message')
+        })
+    } else {
+        res.render('login', {
+            flash_message: rwq.flash('flash_message'), user 
+        })
+    }
 })
 
 app.post('/login', accountConfig.passport.authenticate(
@@ -78,7 +85,7 @@ app.get('/upload', auth, (req, res) => {
 
 app.get('/updateProfile', (req, res) => {
         const _id = req.query._id
-        app.locals.usersCollection.find({_id: database.ObjectID(_id)}).toArray()
+        app.locals.userCollection.find({_id: database.ObjectID(_id)}).toArray()
             .then(users => {
                 if (users.length != 1) {
                     throw `Found ${users.length} users for EDIT`
@@ -97,9 +104,8 @@ app.post('/updateProfile', auth, (req, res) => {
 
     const newValue = {$set: {firstname, lastname}}
     const query = {_id: app.locals.ObjectID(_id)}
-
         .then(result => {
-    app.locals.usersCollection.updateOne(query, newValue)
+            app.locals.userCollection.updateOne(query, newValue)
             res.redirect("/")
         })
         .catch(error => {
