@@ -6,14 +6,14 @@ const password = "password";
 const dbName = "wsp";
 const dbHost = "localhost";
 const dbPort = 27017;
-const userCollectionName = "users";
-const projectCollectionName = "projects";
+const usersCollectionName = "users";
+const projectsCollectionName = "projects";
 
 const dbURL = `mongodb://${username}:${password}@${dbHost}:${dbPort}?authSource=${dbName}`;
 
 let dbclient;
-let userCollection;
-let projectCollection;
+let usersCollection;
+let projectsCollection;
 
 
 function startDBandApp(app, PORT) {
@@ -23,10 +23,10 @@ function startDBandApp(app, PORT) {
         })
         .then(client => {
             dbclient = client;
-            userCollection = client.db(dbName).collection(userCollectionName);
-            app.locals.userCollection = userCollection;
-            projectCollection = client.db(dbName).collection(projectCollectionName);
-            app.locals.projectCollection = projectCollection;
+            usersCollection = client.db(dbName).collection(usersCollectionName);
+            app.locals.usersCollection = usersCollection;
+            projectsCollection = client.db(dbName).collection(projectsCollectionName);
+            app.locals.projectsCollection = projectsCollection;
             app.locals.ObjectID = ObjectID;
             app.listen(PORT, () => {
                 console.log(`Server is running at port ${PORT}`);
@@ -46,6 +46,6 @@ process.on("SIGINT", () => {
 module.exports = {
     startDBandApp,
     ObjectID,
-    userCollection,
-    projectCollection
+    usersCollection,
+    projectsCollection
 };

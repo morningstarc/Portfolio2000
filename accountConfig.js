@@ -15,7 +15,7 @@ function config(app) {
     },
     (req, email, password, done) => {
         console.log('password strategy is called')
-        app.locals.userCollection.find({
+        app.locals.usersCollection.find({
                 email
             }).toArray()
             .then(users => {
@@ -79,7 +79,7 @@ function userSerialDeserial(app) {
         done(null, user._id)
     })
     passport.deserializeUser((serial_user, done) => {
-        app.locals.userCollection.find({
+        app.locals.usersCollection.find({
                 _id: app.locals.ObjectID(serial_user)
             }).toArray()
             .then(users => {
