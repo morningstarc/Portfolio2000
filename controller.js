@@ -104,7 +104,7 @@ app.post('/updateProfile', auth, (req, res) => {
 
     const newValue = {$set: {firstname, lastname}}
     const query = {_id: app.locals.ObjectID(_id)}
-    app.locals.userCollection.updateOne(query, newValue)
+    app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
             res.redirect("/")
         })
@@ -132,7 +132,7 @@ app.post('/upload', auth, (req, res) => {
         code: req.body.code
     };
     
-    app.locals.projectCollection.insertOne(project)
+    app.locals.projectsCollection.insertOne(project)
         .then(result => {
             res.redirect('home')
         })
