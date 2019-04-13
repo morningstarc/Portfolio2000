@@ -5,46 +5,41 @@
 
     <% include ./partials/header %>
 
-    <title>User's Home</title>
+    <title>Login</title>
 </head>
  <% include ./partials/nav%>
 
-  <body class="d-flex flex-column">
-  <div id="page-content">
-  <header class="masthead">
-  <div class="container h-100">
-    <div class="row h-100 align-items-center">
-      <div class="col-12 text-center">
-       
-
-
-<div class="mx-auto" style="width: 320px;">
-<%if (flash_message.length > 0) { %>
+  <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">Login</div>
+      <div class="card-body">
+      <%if (flash_message.length > 0) { %>
         <div class="alert alert-warning" role="alert">
           <%=flash_message%>
           </div>
   <%}%>
- <form class="form-signin" action="/login" method="POST">
-  
-  <label for="email">Email Address</label>
-  <input type="email" id="email" name="email" class="form-control" placeholder="User Name" required autofocus>
-  <label for="password" >Password</label>
-  <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-</form>
-
-
-</div>
+        <form action="/login" method="POST">
+          <div class="form-group">
+            <div class="form-label-group">
+              <input type="text" id="email" class="form-control" placeholder="Email address" name="email" required="required" autofocus="autofocus">
+              <label for="email">Email address</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="required">
+              <label for="password">Password</label>
+            </div>
+          </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+        <div class="text-center">
+          <a class="d-block small mt-3" href="/register">Register an Account</a>
+        </div>
       </div>
     </div>
   </div>
-</header>
-  </div>
-  <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
-    <div class="container text-center">
-      <small>Team: Austin Cauley, MorningStar Cornell</small>
-    </div>
-  </footer>
+
 
     <% include ./partials/scripts %>
 </body>

@@ -1,61 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-
     <% include ./partials/header %>
-
-    <title>User's Home</title>
+ 
 </head>
- <% include ./partials/nav%>
 
-  <body class="d-flex flex-column">
-  <div id="page-content">
-  <header class="masthead">
-  <div class="container h-100">
-    <div class="row h-100 align-items-center">
-      <div class="col-12 text-center">
-       <div class="row">
-            <div class="offset-lg-4 col-lg-4 col-sm-6 col-12 main-section text-center">
-                <div class="row">
-                    <div class="col-lg-412 col-sm-12 col-12 profile-header">
-                        <h4><%=result.name%></h4>
-                    </div>
-                   
+<body id="page-top">
 
+    <% include ./partials/nav %>
+
+  <div id="wrapper">
+
+    <% include ./partials/sidenav %>
+
+
+    <div id="content-wrapper"> 
+
+      <div class="container-fluid">
+
+
+
+        <!-- Page Content -->
+        <!-- Icon Cards-->
+        <div class="row">
+        <% for (const project of projects) {%>
+          <div class="col-xl-3 col-sm-6 mb-3">
+            <div class="card text-white bg-info o-hidden h-100">
+              <div class="card-body">
+                <div class="card-body-icon">
+                  <i class="far fa-file-code"></i>
                 </div>
-                <div class="row user-detail">
-                    <div class="col-lg-12 col-sm-12 col-12 ">
-                          <img src="../public/img/file.png" class="rounded-circle img-thumbnail">
-                       <hr>   
-                       <%p.name%>           
-                       <hr>
-                        <span class="author">Authors: <%p.user%></span>
-                    </div>
-                </div>
-                <div class="row user-skills-detail">
-                    <div class="col-lg-12 col-sm-12 col-12">
-                       <span class="label"></span>
-                       <span class="label"></span>
-                       <span class="label"></span>
-                       <span class="label"></span>
-                       <span class="label"></span>
-                       <span class="label"></span>
-                    </div>
-                    <% }%>
-                </div>
+                <div class="mr-5"><%=project.name%></div>
+              </div>
+              <div class="card-footer bg-white clearfix small z-1">
+  <span style="color: black">
+                <span class="float-left"><i class="fas fa-info-circle"></i> Type:</span>
+                <span class="float-right"><%= project.type%></span><br />
+                <span class="float-left"><i class="fab fa-github-square"></i> github:</span>
+                <span class="float-right"><%= project.github%></span><br />
+                <span class="float-left"><i class="fas fa-link"></i> Link:</span>
+                <span class="float-right"><%= project.link%></span><br />
+                <span class="float-left"><i class="fas fa-code"></i> Code</span>
+                <span class="float-right"><a href="/code?projid=project._id">View Code</a></span>
+</span>
+              </div>
             </div>
+          </div>
+        <% } %>
+         
       </div>
+      <!-- /.container-fluid -->
+   
+    <% include ./partials/footer %>
     </div>
+    <!-- /.content-wrapper -->
+
   </div>
-</header>
-  </div>
-  <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
-    <div class="container text-center">
-      <small>Team: Austin Cauley, MorningStar Cornell</small>
-    </div>
-  </footer>
+  <!-- /#wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
 
     <% include ./partials/scripts %>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.min.js"></script>
+
 </body>
 
 </html>
