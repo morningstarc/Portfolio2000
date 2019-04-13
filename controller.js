@@ -85,7 +85,7 @@ app.get('/logout', (req, res) => {
 //Projects
 
 app.get('/projects', (req, res) => {
-    app.locals.projectsCollection.find({}).toArray()
+    app.locals.projectsCollection.find({user: req.user._id}).toArray()
         .then(projects => {
             res.render('projects', {projects, user: req.user})
         })
@@ -151,9 +151,7 @@ app.post('/updateProfile', auth, (req, res) => {
         })
 });
 
-app.get('/profile', (req, res) => {
-    res.render('profile');
-});
+
 
 //Registration
 app.get('/register', (req, res) => {
