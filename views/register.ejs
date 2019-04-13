@@ -14,60 +14,66 @@
 
 <body class="d-flex flex-column">
   <% include ./partials/nav %>
-    <div id="page-content" style="margin-top: 60px;">
-        <header class="masthead">
-            <div class="container h-100">
-                <div class="row h-100 align-items-center">
-                    <div class="col-12 text-center">
-                        
-                            <p style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; color: #fff; outline-color: black; font-size: 56pt">
-                                Create an Account
-                            </p>
-                        
-                        <br>
+ 
+
+<div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Register an Account</div>
+      <div class="card-body">
                         <% if (flash_message.length > 0) { %>
                         <div class="alert alert-danger" role="alert">
                             <%= flash_message %>
                         </div>
                         <% } %>
                         <form action="/register" method="POST">
-                            <div class="col-sm-3 my-1" id="horizontalAlign">
-                                    <label for="firstname"><p class="label">First Name</p></label>
-                                    <input type="text" class="form-control" name="firstname" id="firstname"
-                                        placeholder="Enter first name">
-                            </div>
-                            <br>
-                            <div class="col-sm-3 my-1" id="horizontalAlign">
-                                    <label for="lastname"><p class="label">Last Name</p></label>
-                                    <input type="text" class="form-control" name="lastname" id="lastname"
-                                        placeholder="Enter last name">
-                            </div>
-                            <br>
-                            <div class="col-sm-3 my-1" id="horizontalAlign">
-                                <label for="email"><p class="label">Email address</p></label>
-                                <input type="email" class="form-control" name="email" id="email"
-                                    aria-describedby="emailHelp" placeholder="Enter email">
-                            </div>
-                            <br>
-                            <div class="col-sm-3 my-1" id="horizontalAlign">
-                                <label for="password"><p class="label">Password</p></label>
-                                <input type="password" class="form-control" name="password" id="password"
-                                    placeholder="Enter password">
-                            </div>
-                            <br>
-                            <div class="col-sm-3 my-1" id="horizontalAlign">
-                                <label for="confirmpassword"><p class="label">Confirm Password</p></label>
-                                <input type="password" class="form-control" name="confirmpassword" id="confirmpassword"
-                                    placeholder="Confirm password">
-                            </div>
-                            <br>
-                            <button type="submit" class="btn btn-light">Create Account</button>
-                        </form>
-                    </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First name" required="required" autofocus="autofocus">
+                  <label for="firstname">First name</label>
                 </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="text" id="lastName" name="lastname" class="form-control" placeholder="Last name" required="required">
+                  <label for="lastName">Last name</label>
+                </div>
+              </div>
             </div>
-        </header>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required="required">
+              <label for="inputEmail">Email address</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="password" id="password" class="form-control" placeholder="Password" required="required">
+                  <label for="password">Password</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="password" id="confirmPassword" name="confirmpassword" class="form-control" placeholder="Confirm password" required="required">
+                  <label for="confirmPassword">Confirm password</label>
+                </div>
+              </div>
+            </div>
+          </div>
+                            <button type="submit" class="btn btn-secondary">Create Account</button>
+        </form>
+        <div class="text-center">
+          <a class="d-block small mt-3" href="/login">Already have an account? Login</a>
+        </div>
+      </div>
     </div>
+  </div>
+
+
     <% include ./partials/scripts %>
 </body>
 
