@@ -47,7 +47,7 @@ function config(app) {
                 .then(users => {
                     if (users.length != 0 ) {
                         return done(null, false, req.flash("flash_message", "Email already in use"));
-                    } else if (req.body.password !== req.body.confirmpassword) {
+                    } else if (req.body.password !== req.body.confirmPassword) {
                         return done(null, false, req.flash("flash_message", "Passwords do not match"));
                     } else if (req.body.firstname === "" || req.body.lastname === "") {
                         return done(null, false, req.flash("flash_message", "You must enter your first and last name"));

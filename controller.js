@@ -144,14 +144,27 @@ app.post('/updateProfile', auth, (req, res) => {
     const query = {_id: app.locals.ObjectID(_id)}
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
-            res.redirect("/")
+            res.redirect('/')
         })
         .catch(error => {
             //error
         })
 });
 
+app.post('/delete', auth, (req, res) => {
+    const _id = req.body._id
+    console.log(_id)
 
+    const query = {_id: app.locals.ObjectID(_id)}
+    req.logout();
+    app.locals.usersCollection.deleteOne(query)
+        .then(result => {
+            res.redirect('/')
+        })
+        .catch(error => {
+            //error
+        })
+});
 
 //Registration
 app.get('/register', (req, res) => {
