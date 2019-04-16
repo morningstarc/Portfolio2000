@@ -144,14 +144,26 @@ app.post('/updateProfile', auth, (req, res) => {
     const query = {_id: app.locals.ObjectID(_id)}
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
-            res.redirect("/")
+            res.redirect('/')
         })
         .catch(error => {
             //error
         })
 });
 
+app.post('/delete', auth, (req, res) => {
+    const _id = req.body._id
 
+    const query = {_id: app.locals.ObjectID(_id)}
+    req.logout();
+    app.locals.usersCollection.deleteOne(query)
+        .then(result => {
+            res.redirect('/')
+        })
+        .catch(error => {
+            //error
+        })
+});
 
 //Registration
 app.get('/register', (req, res) => {
@@ -163,6 +175,30 @@ app.post('/register', accountConfig.passport.authenticate(
     {successRedirect: '/', failureRedirect: '/register', failureFlash: true}
 ));
 
+//Admin Features
+app.get('/userList', adminAuth, (req, res) => {
+    app.locals.usersCollection.find({}).toArray()
+        .then(users => {
+            res.render('userList', {users, user: req.user})
+        })
+        .catch(error => {
+          console.log(error)
+         })
+});
+
+app.post('/adminDelete', adminAuth, (req, res) => {
+    const _id = req.body._id
+
+    const query = {_id: app.locals.ObjectID(_id)}
+    app.locals.usersCollection.deleteOne(query)
+        .then(result => {
+            res.redirect('/userList')
+        })
+        .catch(error => {
+            //error
+        })
+});
+
 
 
 /////AUTH /////
@@ -173,5 +209,14 @@ function auth(req, res, next) {
         res.render('401')
     } else {
         next()
+    }
+}
+
+function adminAuth(req, res, next) {
+    const user = req.user;
+    if (!user || !user.admin) {
+        res.render("401");
+    } else {
+        next();
     }
 }
