@@ -72,6 +72,7 @@ function config(app) {
 
     passport.use("localLogin", localLogin);
     passport.use("signupStrategy", signupStrategy);
+    
 }
 
 function userSerialDeserial(app) {
@@ -94,5 +95,7 @@ function userSerialDeserial(app) {
             })
     })
 }
+
+
 
 module.exports = {config, passport};

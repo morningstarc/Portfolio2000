@@ -24,25 +24,37 @@
         <!-- Icon Cards-->
         <div class="row">
         <% for (const project of projects) {%>
-          <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="col-xl-4 col-sm-6 mb-4">
             <div class="card text-white bg-info o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-                  <i class="far fa-file-code"></i>
+            <div class="card-header"> <h5><%=project.name%></h5></div>
+            <div class="card-body-icon">
+                  <i class="far fa-file-code" style="font-size: 2em;"></i>
+                  
                 </div>
-                <div class="mr-5"><%=project.name%></div>
+              <div class="card-body">
+                 
+                <i class="fas fa-info-circle"></i> Type: <%= project.type%><br />
+                <i class="fab fa-github-square"></i> github: <%= project.github%><br />
+                <i class="fas fa-link"></i> Link: <%= project.link%><br />
+                <i class="fas fa-code"></i> Description: <%= project.description%></span>
+             
+                
               </div>
-              <div class="card-footer bg-white clearfix small z-1">
-  <span style="color: black">
-                <span class="float-left"><i class="fas fa-info-circle"></i> Type:</span>
-                <span class="float-right"><%= project.type%></span><br />
-                <span class="float-left"><i class="fab fa-github-square"></i> github:</span>
-                <span class="float-right"><%= project.github%></span><br />
-                <span class="float-left"><i class="fas fa-link"></i> Link:</span>
-                <span class="float-right"><%= project.link%></span><br />
-                <span class="float-left"><i class="fas fa-code"></i> Code</span>
-                <span class="float-right"><a href="/code?projid=project._id">View Code</a></span>
-</span>
+              <div class="card-footer bg-white">
+              <div class="row">
+              <div style="display: inline-block; float-left;">
+              <form action="deleteProject" method="POST">
+              <input type="hidden" name="_id" value="<%= project._id%>">
+                <button type="sumbit" class="btn btn-sm btn-danger" role="button">Delete</button>
+              </form>
+              </div>
+              <div style="width: 75%"></div>
+              <div style="display: inline-block; float-right;">
+              <form action="updateProject" method="POST">
+                 <a href="/updateProject/?_id=<%=project._id%>"type="button" class="btn btn-sm btn-warning" role="button">Edit</a>
+              </form>
+              </div>
+              </div>
               </div>
             </div>
           </div>
