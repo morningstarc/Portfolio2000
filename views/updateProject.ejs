@@ -43,42 +43,43 @@
                     <div class="col-lg-8 col-xlg-9 col-md-7">
                         <div class="card">
                             <div class="card-block">
-                                <form class="form-horizontal form-material" action="/uploadProject" method="POST" id="uploadProfile">
+                                <form class="form-horizontal form-material" action="/updateProject" method="POST" id="updateProject">
                                     <div class="form-group">
                                         <label class="col-md-12">Project Title</label>
                                         <div class="col-md-12">
-                                            <input type="text" placeholder="Project Title" class="form-control form-control-line" name="title" id="title" required="required">
+                                            <input type="text" placeholder="Project Title" class="form-control form-control-line" name="title" id="title" required="required" value="<%= project.name%>">
 
                                         </div>
                                     </div>
                                         <div class="form-group">
                                         <label class="col-md-12">Project Type</label>
                                         <div class="col-md-12">
-                                            <input type="text" placeholder="Type of project ie website, etc." class="form-control form-control-line" name="type" id="type" required="required">
+                                            <input type="text" placeholder="Type of project ie website, etc." class="form-control form-control-line" name="type" id="type" required="required" value="<%= project.type%>">
 
                                         </div>
                                     </div>
                                     <div class="form-group">
                                        <label class="col-md-12" for="link">Link</label>
                                         <div class="col-md-12">
-                                        <input type="text" class="form-control" name="link" id="link" placeholder="Link">
+                                        <input type="text" class="form-control" name="link" id="link" placeholder="Link" value="<%= project.link%>">
                                     </div></div>
                                       <div class="form-group">
                                         <label class="col-md-12" for="github">Git Hub Link</label>
                                          <div class="col-md-12">
-                                        <input type="text" class="form-control" name="github" id="github" placeholder="Github link">
+                                        <input type="text" class="form-control" name="github" id="github"  placeholder="Github Link" value="<%= project.github%>">
                                     </div></div>
                                      <div class="form-group">
-                                        <label class="col-md-12" for="github">Description</label>
+                                        <label class="col-md-12" for="description">Description</label>
                                          <div class="col-md-12">
-                                        <textarea cols="3" type="text" class="form-control" name="description" id="description" placeholder="Project Description"></textarea>
+                                        <textarea cols="3" type="text" class="form-control" name="description" id="description" placeholder="Project Description"><%= project.description%></textarea>
                                     </div></div>
                                     <div class="form-group">
                                         <div class="col-sm-12">
-                                        <input type="hidden" name="_id" value="<%= user._id%>">
-                                            <button class="btn btn-info" type="submit">Upload Project</button>
+                                        <input type="hidden" name="_id" value="<%= project._id%>">
+                                            <button class="btn btn-info" type="submit">Update Project</button>
                                         </div>
                                     </div>
+                                    
                                 </form>
                             </div>
                         </div>
