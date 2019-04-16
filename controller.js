@@ -38,6 +38,11 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(function (req, res, next) {
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+});
+
 accountConfig.config(app);
 
 app.use(flash())
@@ -45,7 +50,19 @@ app.use(flash())
 
 ///ROUTES ///
 
+
+//Home
 app.get('/', (req, res) => {
+    res.render('blank', { user: req.user })
+  
+})
+
+app.get('/home', (req, res) => {
+    res.render('blank', { user: req.user })
+})
+
+//Login
+app.get('/login', (req, res) => {
     const user = req.user;
     if (!user) {
         res.render('login', {
@@ -53,11 +70,10 @@ app.get('/', (req, res) => {
         })
     } else {
         res.render('login', {
-            flash_message: req.flash('flash_message'), user 
+            flash_message: req.flash('flash_message'), user
         })
     }
 })
-
 app.post('/login', accountConfig.passport.authenticate(
     'localLogin', {
         successRedirect: '/home',
@@ -66,23 +82,116 @@ app.post('/login', accountConfig.passport.authenticate(
     }
 ))
 
-// app.get('/projects', (req, res) => {
-//     res.render('projects', {user: req.user})
-// })
-
-app.get('/home', (req, res) => {
-    res.render('home', {user: req.user})
-})
-
 app.get('/logout', (req, res) => {
     req.logout()
-    res.redirect('/')
+    res.redirect('/login')
 });
 
-app.get('/upload', auth, (req, res) => {
-    res.render('upload', {user: req.user})
+//Projects
+
+app.get('/projects', (req, res) => {
+    app.locals.projectsCollection.find({user: req.user._id}).toArray()
+        .then(projects => {
+            res.render('projects', {projects, user: req.user})
+        })
+        .catch(error => {
+          console.log(error)
+         })
 });
 
+app.get('/uploadProject', auth, (req, res) => {
+    res.render('uploadProject', {user: req.user})
+});
+
+app.post('/uploadProject', auth, (req, res) => {
+    //upload to database
+    const project = {
+        user: req.user._id,
+        name: req.body.title,
+        type: req.body.type,
+        github: req.body.github,
+        link: req.body.link,
+        description: req.body.description
+    };
+
+    app.locals.projectsCollection.insertOne(project)
+        .then(result => {
+            app.locals.projectsCollection.find({user: req.user._id}).toArray()
+                .then(projects => {
+                    res.render('projects', {projects, user: req.user })
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        })
+        .catch(error => {
+            res.render('errorPage', {message: 'project failed to upload to db'})
+        })
+        
+})
+
+app.post('/deleteProject', (req, res) => {
+    const _id = req.body._id;
+
+    const delquery = {_id: database.ObjectID(_id)};
+
+    app.locals.projectsCollection.deleteOne(delquery)
+        .then(result => {
+            app.locals.projectsCollection.find({
+                    user: req.user._id
+                }).toArray()
+                .then(projects => {
+                    res.render('projects', {projects, user: req.user})
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        })
+        .catch(error => {
+            res.render('errorPage', {
+                source: '/deleteProject(POST)',
+                error
+            })
+        })
+
+});
+
+app.get('/updateProject', (req, res) => {
+     const _id = req.query._id
+     app.locals.projectsCollection.find({_id: database.ObjectID(_id)}).toArray()
+         .then(projects => {
+             if (projects.length != 1) {
+                 throw `Found ${projects.length} projects for EDIT`
+             }
+             res.render("updateProject", {project: projects[0], user: req.user})
+         })
+         .catch(error => {});
+})
+
+app.post('/updateProject', auth, (req, res) => {
+    const _id = req.body._id
+    const name = req.body.title
+    const type = req.body.type
+    const github = req.body.github
+    const link = req.body.link
+    const description = req.body.description
+    const newValue = {$set: {name, type, github, link, description}}
+    const query = {_id: app.locals.ObjectID(_id)}
+    app.locals.projectsCollection.updateOne(query, newValue)
+        .then(result => {
+            
+             app.locals.projectsCollection.find({user: req.user._id}).toArray()
+                 .then(projects => {
+                     res.render('projects', {projects, user: req.user})
+                 })
+                 .catch(error => {
+                     console.log(error)
+                 })
+        })
+        .catch(error => {error })
+});
+
+//Profile
 app.get('/updateProfile', (req, res) => {
         const _id = req.query._id
         app.locals.usersCollection.find({_id: database.ObjectID(_id)}).toArray()
@@ -106,13 +215,28 @@ app.post('/updateProfile', auth, (req, res) => {
     const query = {_id: app.locals.ObjectID(_id)}
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
-            res.redirect("/")
+            res.redirect('/')
         })
         .catch(error => {
             //error
         })
 });
 
+app.post('/delete', auth, (req, res) => {
+    const _id = req.body._id
+
+    const query = {_id: app.locals.ObjectID(_id)}
+    req.logout();
+    app.locals.usersCollection.deleteOne(query)
+        .then(result => {
+            res.redirect('/')
+        })
+        .catch(error => {
+            //error
+        })
+});
+
+//Registration
 app.get('/register', (req, res) => {
     res.render('register', {flash_message: req.flash("flash_message")});
 });
@@ -121,27 +245,30 @@ app.post('/register', accountConfig.passport.authenticate(
     'signupStrategy',
     {successRedirect: '/', failureRedirect: '/register', failureFlash: true}
 ));
-app.post('/upload', auth, (req, res) => {
-        //upload to database
-    const project = {
-        user: req.user._id,
-        name: req.body.title,
-        type: req.body.type,
-        github: req.body.github,
-        link: req.body.link,
-        code: req.body.code
-    };
-    
-    app.locals.projectsCollection.insertOne(project)
-        .then(result => {
-            res.redirect('home')
+
+//Admin Features
+app.get('/userList', adminAuth, (req, res) => {
+    app.locals.usersCollection.find({}).toArray()
+        .then(users => {
+            res.render('userList', {users, user: req.user})
         })
         .catch(error => {
-            res.render('errorPage', {
-                message: 'project failed to upload to db'
-            })
-    })
-})
+          console.log(error)
+         })
+});
+
+app.post('/adminDelete', adminAuth, (req, res) => {
+    const _id = req.body._id
+
+    const query = {_id: app.locals.ObjectID(_id)}
+    app.locals.usersCollection.deleteOne(query)
+        .then(result => {
+            res.redirect('/userList')
+        })
+        .catch(error => {
+            //error
+        })
+});
 
 
 
@@ -153,5 +280,14 @@ function auth(req, res, next) {
         res.render('401')
     } else {
         next()
+    }
+}
+
+function adminAuth(req, res, next) {
+    const user = req.user;
+    if (!user || !user.admin) {
+        res.render("401");
+    } else {
+        next();
     }
 }

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <% include ./partials/header %>
+ 
+</head>
+
+<body id="page-top">
+
+    <% include ./partials/nav %>
+
+  <div id="wrapper">
+
+    <% include ./partials/sidenav %>
+
+
+    <div id="content-wrapper"> 
+
+      <div class="container-fluid">
+
+
+
+        <!-- Page Content -->
+
+ <!-- Row -->
+                <div class="row">
+                    <!-- Column -->
+                     
+                    <div class="col-lg-4 col-xlg-3 col-md-5">
+                        <div class="card">
+                            <div class="card-block">
+                                <center class="m-t-30"> 
+                                    <h4 class="card-title m-t-10"><%user.firstname%>  <%user.lastname%></h4>
+                                    <div class="row text-center justify-content-md-center">
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Column -->
+                    <!-- Column -->
+                    <div class="col-lg-8 col-xlg-9 col-md-7">
+                        <div class="card">
+                            <div class="card-block">
+                                <form class="form-horizontal form-material" action="/uploadProject" method="POST" id="uploadProfile">
+                                    <div class="form-group">
+                                        <label class="col-md-12">Project Title</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Project Title" class="form-control form-control-line" name="title" id="title" required="required">
+
+                                        </div>
+                                    </div>
+                                        <div class="form-group">
+                                        <label class="col-md-12">Project Type</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Type of project ie website, etc." class="form-control form-control-line" name="type" id="type" required="required">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                       <label class="col-md-12" for="link">Link</label>
+                                        <div class="col-md-12">
+                                        <input type="text" class="form-control" name="link" id="link" placeholder="Link">
+                                    </div></div>
+                                      <div class="form-group">
+                                        <label class="col-md-12" for="github">Git Hub Link</label>
+                                         <div class="col-md-12">
+                                        <input type="text" class="form-control" name="github" id="github" placeholder="Github link">
+                                    </div></div>
+                                     <div class="form-group">
+                                        <label class="col-md-12" for="github">Description</label>
+                                         <div class="col-md-12">
+                                        <textarea cols="3" type="text" class="form-control" name="description" id="description" placeholder="Project Description"></textarea>
+                                    </div></div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                        <input type="hidden" name="_id" value="<%= user._id%>">
+                                            <button class="btn btn-info" type="submit">Upload Project</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+                <!-- Row -->
+
+     
+      </div>
+      <!-- /.container-fluid -->
+   
+    <% include ./partials/footer %>
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  
+
+    <% include ./partials/scripts %>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.min.js"></script>
+
+</body>
+
+</html>

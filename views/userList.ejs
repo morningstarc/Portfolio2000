@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% include ./partials/header %>
+
+</head>
+
+<body id="page-top">
+
+    <% include ./partials/nav %>
+
+    <div id="wrapper">
+
+        <% include ./partials/sidenav %>
+
+
+        <div id="content-wrapper fill">
+            <!-- background image -->
+
+            <div class="container-fluid">
+
+
+
+                <!-- Page Content -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Email</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Update Password</th>
+                            <th scope="col">Delete User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(const displayUser of users) { %>
+                        <tr>
+                            <th scope="row"><%= displayUser.email %></th>
+                            <td><%= displayUser.firstname %></td>
+                            <td><%= displayUser.lastname %></td>
+                            <td></td>
+                            <td>
+                                <form action="/adminDelete" method="POST">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="hidden" name="_id" value="<%= displayUser._id%>">
+                                            <button class="btn btn-danger" type="submit">Delete Account</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        <%}%>
+            </tbody>
+          </table>
+       
+ 
+
+      </div>
+      <!-- /.container-fluid -->
+   
+    <% include ./partials/footer %>
+            </div>
+            <!-- /.content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+
+
+        <% include ./partials/scripts %>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin.min.js"></script>
+
+</body>
+
+</html>
