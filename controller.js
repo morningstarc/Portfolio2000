@@ -153,7 +153,6 @@ app.post('/updateProfile', auth, (req, res) => {
 
 app.post('/delete', auth, (req, res) => {
     const _id = req.body._id
-    console.log(_id)
 
     const query = {_id: app.locals.ObjectID(_id)}
     req.logout();
@@ -176,6 +175,30 @@ app.post('/register', accountConfig.passport.authenticate(
     {successRedirect: '/', failureRedirect: '/register', failureFlash: true}
 ));
 
+//Admin Features
+app.get('/userList', adminAuth, (req, res) => {
+    app.locals.usersCollection.find({}).toArray()
+        .then(users => {
+            res.render('userList', {users, user: req.user})
+        })
+        .catch(error => {
+          console.log(error)
+         })
+});
+
+app.post('/adminDelete', adminAuth, (req, res) => {
+    const _id = req.body._id
+
+    const query = {_id: app.locals.ObjectID(_id)}
+    app.locals.usersCollection.deleteOne(query)
+        .then(result => {
+            res.redirect('/userList')
+        })
+        .catch(error => {
+            //error
+        })
+});
+
 
 
 /////AUTH /////
@@ -186,5 +209,14 @@ function auth(req, res, next) {
         res.render('401')
     } else {
         next()
+    }
+}
+
+function adminAuth(req, res, next) {
+    const user = req.user;
+    if (!user || !user.admin) {
+        res.render("401");
+    } else {
+        next();
     }
 }
