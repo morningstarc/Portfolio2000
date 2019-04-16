@@ -53,12 +53,12 @@ app.use(flash())
 
 //Home
 app.get('/', (req, res) => {
-    res.render('blank', { user: req.user })
+    res.render('home', { user: req.user })
   
 })
 
 app.get('/home', (req, res) => {
-    res.render('blank', { user: req.user })
+    res.render('home', { user: req.user })
 })
 
 //Login
