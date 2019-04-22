@@ -88,7 +88,7 @@ const imageUpload = multer({
 
 //Home
 app.get('/', (req, res) => {
-    res.render('blank', { user: req.user })
+    res.render('home', { user: req.user })
   
 })
 
