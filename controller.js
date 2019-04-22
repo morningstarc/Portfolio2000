@@ -48,8 +48,43 @@ accountConfig.config(app);
 app.use(flash())
 
 
-///ROUTES ///
 
+//Multer for Images
+const multer = require('multer')
+const path = require('path')
+
+const MAX_FILESIZE = 1020 * 1024 * 1 // 1MB
+const fileTypes = /jpeg|jpg|png|gif/ //regex
+
+const storageOptions = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './public/img')
+    },
+    filename: (req, file, callback) => {
+        callback(null, 'image' + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const imageUpload = multer({
+    storage: storageOptions,
+    limits: {
+        fileSize: MAX_FILESIZE
+    },
+    fileFilter: (req, file, callback) => {
+        const ext = fileTypes.test(path.extname(file.originalname).toLowerCase())
+        const mimetype = fileTypes.test(file.mimetype)
+        if (ext && mimetype) {
+            return callback(null, true)
+        } else {
+            return callback('Error: Images (Type: jpeg, jpg, png, gif) only')
+        }
+    }
+}).single('imageButton')
+
+
+
+
+///ROUTES ///
 
 //Home
 app.get('/', (req, res) => {
@@ -58,7 +93,13 @@ app.get('/', (req, res) => {
 })
 
 app.get('/home', (req, res) => {
-    res.render('blank', { user: req.user })
+    app.locals.projectsCollection.find().toArray()
+        .then(projects => {
+            res.render('home', { projects, user: req.user })
+        })
+        .catch(error => {
+            console.log(error)
+        })
 })
 
 //Login
@@ -90,7 +131,9 @@ app.get('/logout', (req, res) => {
 //Projects
 
 app.get('/projects', (req, res) => {
-    app.locals.projectsCollection.find({user: req.user._id}).toArray()
+    const _id = req.query._id;
+    const query = database.ObjectID(_id)
+    app.locals.projectsCollection.find({user: query}).toArray()
         .then(projects => {
             res.render('projects', {projects, user: req.user})
         })
@@ -157,7 +200,7 @@ app.post('/deleteProject', (req, res) => {
 });
 
 app.get('/updateProject', (req, res) => {
-     const _id = req.query._id
+     const _id = req.body._id
      app.locals.projectsCollection.find({_id: database.ObjectID(_id)}).toArray()
          .then(projects => {
              if (projects.length != 1) {
@@ -165,7 +208,7 @@ app.get('/updateProject', (req, res) => {
              }
              res.render("updateProject", {project: projects[0], user: req.user})
          })
-         .catch(error => {});
+         .catch(error => {console.log(error)});
 })
 
 app.post('/updateProject', auth, (req, res) => {
@@ -192,6 +235,25 @@ app.post('/updateProject', auth, (req, res) => {
 });
 
 //Profile
+app.get('/user', (req, res) => {
+    const _id = req.query._id
+    app.locals.usersCollection.find({_id: database.ObjectID(_id)}).toArray()
+        .then(foundUsers => {
+            if (foundUsers.length != 1) {
+                throw `Found ${foundUsers.length} users for EDIT`
+            }
+            if(req.user){
+                res.render("user", {fu: foundUsers[0], user: req.user})
+            }else{
+                res.render("user", {fu: foundUsers[0]})
+            }
+        })
+        .catch(error => {console.log(error)});
+});
+
+
+
+
 app.get('/updateProfile', (req, res) => {
         const _id = req.query._id
         app.locals.usersCollection.find({_id: database.ObjectID(_id)}).toArray()
@@ -215,7 +277,7 @@ app.post('/updateProfile', auth, (req, res) => {
     const query = {_id: app.locals.ObjectID(_id)}
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
-            res.redirect('/')
+            res.redirect('/user')
         })
         .catch(error => {
             //error
@@ -235,6 +297,68 @@ app.post('/delete', auth, (req, res) => {
             //error
         })
 });
+
+/////FILE UPLOAD & IMAGE ////////
+app.post('/imageUpload', auth, (req, res) => {
+    imageUpload(req, res, error => {
+        if (error) {
+            return res.render('errorPage', {
+                message: error
+            })
+        } else if (!req.file) {
+            return res.render('errorPage', {
+                message: 'No file selected'
+            })
+        }
+
+        //upload to database
+        const image = {
+            filename: req.file.filename,
+            size: req.file.size
+        }
+        const newValue = { $set: { image } }
+        const _id = req.user._id;
+        const query = {
+            _id: app.locals.ObjectID(_id)
+        }
+        app.locals.usersCollection.findOneAndUpdate(query, newValue)
+            .then(result => {
+                res.render('updateProfile', { user: req.user })
+            })
+            .catch(error => {
+                res.render('errorPage', {
+                    message: 'image failed uploading to DB'
+                })
+            })
+    })
+})
+
+
+
+const fs = require('fs')
+
+app.post('deleteImage', auth, (req, res) => {
+    app.locals.imageCollection.deleteOne({
+            _id: app.locals.ObjectID(req.body._id)
+        })
+        .then(result => {
+            const filename = req.body.filename
+            fs.unlink('./public/images/' + filename, (error) => {
+                if (error) {
+                    res.render('admin/errorPage', {
+                        message: 'cant delete image'
+                    })
+                } else {
+                    res.redirect('/admin/home')
+                }
+            })
+        })
+        .catch(error => {
+            res.render('admin/errorPage', {
+                message: 'error deleting image DB'
+            })
+        })
+})
 
 //Registration
 app.get('/register', (req, res) => {
