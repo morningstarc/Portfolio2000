@@ -7,7 +7,7 @@
          <span>Profile</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="profileDropdown">
-          <a class="dropdown-item" href="/profile?_id=<%=user._id%>">View Profile</a>
+          <a class="dropdown-item" href="/user?_id=<%=user._id%>">View Profile</a>
           <a class="dropdown-item" href="/updateProfile?_id=<%=user._id%>">Update Profile</a>
           <!-- <a class="dropdown-item" href="forgot-password.html">Forgot Password</a> -->
         </div>
@@ -18,7 +18,7 @@
          <span>Projects</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="projectsDropdown">
-          <a class="dropdown-item" href="/projects">View Projects</a>
+          <a class="dropdown-item" href="/projects?_id=<%=user._id%>">View Projects</a>
            <a class="dropdown-item" href="/uploadProject">Upload Projects</a>
         </div>
       </li>
@@ -33,5 +33,24 @@
           </div>
         </li>
         <%}%>
+      <%} else {%>
+ 
+         <h6 class="dropdown-header"><i class="fas fa-filter"></i> Filter</h4>
+      <li class="nav-item">
+        <a class="nav-link" href="/search?_kw=java">
+          <i class="fab fa-java"></i>
+          <span>Java</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/search?_kw=javascript">
+          <i class="fab fa-js-square"></i>
+          <span>JavaScript</span></a>
+      </li>
+     <li class="nav-item">
+        <a class="nav-link" href="/home">
+          <i class="fas fa-fw fa-list"></i>
+          <span>All Projects</span></a>
+      </li>
       <%}%>
+
     </ul>

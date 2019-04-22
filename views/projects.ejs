@@ -37,29 +37,43 @@
                 <i class="fab fa-github-square"></i> github: <%= project.github%><br />
                 <i class="fas fa-link"></i> Link: <%= project.link%><br />
                 <i class="fas fa-code"></i> Description: <%= project.description%></span>
+                
              
                 
               </div>
               <div class="card-footer bg-white">
-              <div class="row">
-              <div style="display: inline-block; float-left;">
-              <form action="deleteProject" method="POST">
-              <input type="hidden" name="_id" value="<%= project._id%>">
-                <button type="sumbit" class="btn btn-sm btn-danger" role="button">Delete</button>
-              </form>
+                <div class="row">
+                <% if (isAuthenticated) { %> 
+                  <%if(project.user == user._id) {%> 
+                    <div class="col-md-4" style="display: inline-block;">
+                      <form action="deleteProject" method="POST">
+                        <input type="hidden" name="_id" value="<%= project._id%>">
+                        <button type="sumbit" class="btn btn-danger btn-sm" role="button">Delete</button>
+                      </form>
+                    </div>
+                    <div class="col-md-4"></div>
+                      <div style="display: inline-block;">
+                        <form action="updateProject" method="POST">
+                          <input type="hidden" name="_id" value="<%= project._id%>">
+                          <button type="sumbit" class="btn btn-warning btn-sm" role="button">Edit</a>
+                        </form>
+                      </div>
+                    </div>
+                     <% } %>
+                    <% } else {%>
+                    <div class="col-md-4"></div>
+                      <div style="display: inline-block;">
+                       <a href="/user?_id=<%=project.user%>" class="btn btn-sm btn-info" role="button">View Profile</a>
+                      </div>
+                    </div>
+                   
+                  <% } %>
+                  </div>
+              
               </div>
-              <div style="width: 75%"></div>
-              <div style="display: inline-block; float-right;">
-              <form action="updateProject" method="POST">
-                 <a href="/updateProject/?_id=<%=project._id%>"type="button" class="btn btn-sm btn-warning" role="button">Edit</a>
-              </form>
-              </div>
-              </div>
-              </div>
-            </div>
           </div>
-        <% } %>
-         
+        
+         <% } %>
       </div>
       <!-- /.container-fluid -->
    
