@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <% include ./partials/header %>
+  <link rel="stylesheet" href="../public/css/profile.css">
+</head>
+
+<body id="page-top">
+
+    <% include ./partials/nav %>
+
+  <div id="wrapper">
+
+    <% include ./partials/sidenav %>
+
+
+    <div id="content-wrapper"> 
+
+      <div class="container-fluid">
+        <!-- Page Content -->
+       
+   
+       
+      <div class="row h-100 align-items-center">
+      <div class="col-12 text-center">
+        <div class="row">
+            <div class="col-md-5 main-section text-center">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-12 profile-header">
+                        <h4><%=fu.firstname%>  <%=fu.lastname%></h4>
+                    </div>
+                </div>
+                <div class="row user-detail">
+                    <div class="col-lg-12 col-sm-12 col-12 ">
+                       <img src="../public/img/<%=fu.image.filename%>" class="rounded-circle img-thumbnail">
+                        <hr>
+                        <div class="biobuttons">
+                        <a href="/projects?_id=<%=fu._id%>" class="btn btn-success btn-sm">View Portfolio</a>
+                        <a href="/message?_id=<%=fu._id%>" class="btn btn-info btn-sm">Send Message</a>
+                        </div>
+                        <hr>
+                        <span>User bio.</span>
+                    </div>
+                </div>
+                <div class="row user-skills-detail">
+                    <div class="col-lg-12 col-sm-12 col-12">
+                       <span class="label">HTML 5</span>
+                       <span class="label">CSS 3</span>
+                       <span class="label">JQUERY</span>
+                       <span class="label">JavaScript</span>
+                       <span class="label">JAVA</span>
+                    </div>
+                </div>
+            </div>
+      </div>
+    </div>
+     
+      </div><!-- /.container-fluid -->
+   
+    <% include ./partials/footer %>
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+
+    <% include ./partials/scripts %>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin.min.js"></script>
+
+</body>
+
+</html>
+
+
+<!-- FONTS --><!-- Roboto, Yellowtail, and Montserrat -->
+
+
+ 
+
+
+
+       
