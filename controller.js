@@ -128,6 +128,18 @@ app.get('/logout', (req, res) => {
     res.redirect('/login')
 });
 
+//Search
+app.get('/searchCode', (req, res) => {
+    const kw = req.query._kw
+    app.locals.projectsCollection.find({type: kw}).toArray()
+        .then(projects => {
+            res.render('home', { projects, user: req.user })
+        })
+        .catch(error => {
+            console.log(error)
+        })
+})
+
 //Projects
 
 app.get('/projects', (req, res) => {
