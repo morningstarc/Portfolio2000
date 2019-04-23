@@ -38,7 +38,15 @@
                             <th scope="row"><%= displayUser.email %></th>
                             <td><%= displayUser.firstname %></td>
                             <td><%= displayUser.lastname %></td>
-                            <td></td>
+                            <td>
+                                <form action="/adminResetPassword" method="POST">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input type="hidden" name="_id" value="<%= displayUser._id%>">
+                                        <button class="btn btn-primary" type="submit">Reset Password</button>
+                                    </div>
+                                </div>
+                            </form></td>
                             <td>
                                 <form action="/adminDelete" method="POST">
                                     <div class="form-group">

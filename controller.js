@@ -4,6 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const accountConfig = require('./accountConfig');
+const passwordcrypto = require("./passwordHash.js");
 const PORT = process.env.PORT || 3000;
 
 //EJS Template Views
@@ -391,6 +392,21 @@ app.get('/userList', adminAuth, (req, res) => {
         .catch(error => {
           console.log(error)
          })
+});
+
+app.post('/adminResetPassword', adminAuth, (req, res) => {
+    const _id = req.body._id
+    
+    const newValue = {$set: {password: passwordcrypto.hashPassword("password")}}
+    const query = {_id: app.locals.ObjectID(_id)}
+
+    app.locals.usersCollection.updateOne(query, newValue)
+        .then(result => {
+            res.redirect('/home')
+        })
+        .catch(error => {
+            //error
+        })
 });
 
 app.post('/adminDelete', adminAuth, (req, res) => {
