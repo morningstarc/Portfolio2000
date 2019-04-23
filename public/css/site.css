@@ -47,14 +47,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden
 }
 
-.fill img {
-  flex-shrink: 0;
-  min-width: 100%;
-  min-height: 100%
-}
+
+
 
 /*profile*/
 
@@ -274,7 +270,6 @@ a .btn {
 /* Card Styling */
 
 .main-section {
-  border: 1px solid #138496;
   background-color: #fff;
   font-family: 'Muli', sans-serif;
 }
@@ -289,9 +284,9 @@ a .btn {
   font-family: 'Muli', sans-serif;
 }
 
+
 .user-detail {
   margin: -50px 0px 30px 0px;
-
 }
 
 .user-detail img {

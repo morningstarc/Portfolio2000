@@ -22,17 +22,16 @@
        
    
        
-      <div class="row h-100 align-items-center">
-      <div class="col-12 text-center">
+      <div class="col-12 fill">
         <div class="row">
-            <div class="col-md-5 main-section text-center">
+            <div class="col-md-12 main-section text-center">
                 <div class="row">
-                    <div class="col-lg-12 col-sm-12 col-12 profile-header">
+                    <div class="col-lg-12 col-sm-12 col-12 profile-header ">
                         <h4><%=fu.firstname%>  <%=fu.lastname%></h4>
                     </div>
                 </div>
-                <div class="row user-detail">
-                    <div class="col-lg-12 col-sm-12 col-12 ">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-12">
                        <img src="../public/img/<%=fu.image.filename%>" class="rounded-circle img-thumbnail">
                         <hr>
                         <div class="biobuttons">
@@ -40,7 +39,7 @@
                         <a href="/message?_id=<%=fu._id%>" class="btn btn-info btn-sm">Send Message</a>
                         </div>
                         <hr>
-                        <span>User bio.</span>
+                        <%=fu.bio%>
                     </div>
                 </div>
                 <div class="row user-skills-detail">
@@ -54,8 +53,6 @@
                 </div>
             </div>
       </div>
-    </div>
-     
       </div><!-- /.container-fluid -->
    
     <% include ./partials/footer %>
@@ -65,17 +62,11 @@
   </div>
   <!-- /#wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-
+  
 
     <% include ./partials/scripts %>
 
-  <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin.min.js"></script>
+  
 
 </body>
 

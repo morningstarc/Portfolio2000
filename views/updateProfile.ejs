@@ -30,88 +30,78 @@
 
     <div id="content-wrapper"> 
 
-      <div class="container-fluid">
+      <div class="container-fluid fill">
 
 
 
         <!-- Page Content -->
-       
- 
- <!-- Row -->
-                <div class="row">
-                    <!-- Column -->
-                 
 
-            <div class="col-md-5 main-section text-center">
-                <div class="row">
+<div class="col-md-12">
+<div class="row">
+<div class="col-md-6">
+   <div class="row">
                     <div class="col-lg-12 col-sm-12 col-12 profile-header">
                         <h4><%=user.firstname%>  <%=user.lastname%></h4>
                     </div>
                 </div>
                 <div class="row user-detail">
                     <div class="col-lg-12 col-sm-12 col-12 ">
-                    <%if(user.image.file) {%>
+                    
                        <img src="../public/img/<%=user.image.filename%>" class="rounded-circle img-thumbnail">
-                    <%}%>
+                   
                         <hr>
-
-                        <span><%=user.bio%></span>
+                      <div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+  </div>
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+  </div>
+</div>
                         
                     </div>
                 </div>
                 <div class="row user-skills-detail">
-                    <div class="col-lg-12 col-sm-12 col-12">
+                    <div class="col-12">
                       
                     </div>
                 </div>
-            </div>
-                   
-
-                    <!-- Column -->
-                    <div class="col-lg-6 col-xlg-9 col-md-7">
-                        <div class="card">
-                            <div class="card-block">
+</div>
+<div class="col-md-6">
+ <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Update yourn Account</div>
+      <div class="card-body">
                                 <form class="form-horizontal form-material" action="/updateProfile" method="POST" id="updateForm" onsubmit="return validateForm()">
                                     <div class="form-group">
-                                        <label class="col-md-12">First Name</label>
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="First Name" class="form-control form-control-line" name="firstname" id="firstname" value="<%= user.firstname%>">
-
-                                        </div>
-                                    </div>
-                                        <div class="form-group">
-                                        <label class="col-md-12">Last Name</label>
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="Last Name" class="form-control form-control-line" name="lastname" id="lastname" value="<%= user.lastname%>">
-
-                                        </div>
-                                    </div>
-                                   <%# <div class="form-group">
-                                        <label for="example-email" class="col-md-12">Email</label>
-                                        <div class="col-md-12">
-                                            <input type="email" placeholder="johnathan@admin.com" class="form-control form-control-line" name="example-email" id="example-email">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-12">Password</label>
-                                        <div class="col-md-12">
-                                            <input type="password" value="password" class="form-control form-control-line">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-12">Phone No</label>
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="123 456 7890" class="form-control form-control-line">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-12">Message</label>
-                                        <div class="col-md-12">
-                                            <textarea rows="5" class="form-control form-control-line"></textarea>
-                                        </div>
-                                    </div>
-                                 %>
-                                  
+            <div class="form-row">
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="text" id="firstname" name="firstname" class="form-control" placeholder="First name" required="required">
+                  <label for="firstname">First name</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="text" id="lastName" name="lastname" class="form-control" placeholder="Last name" required="required">
+                  <label for="lastName">Last name</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <input type="text" id="email" name="email" class="form-control" placeholder="Email address" required="required">
+              <label for="email">Email address</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <textarea id="bio" name="bio" class="form-control" rows="4" placeholder="Bio: Tell us about yourself"></textarea>
+              
+            </div>
+          </div>
+                                          
                                  <div class="row">
                                     <div style="display: inline-block; float-left; margin-left: 15px;">
                                     <div class="form-group">
@@ -136,9 +126,32 @@
                         </div>
                     </div>
                     <!-- Column -->
+</div>
+
+</div>
+</div>
+
+
+ <!-- Row -->
+                <div class="row">
+                    <!-- Column -->
+                 
+
+
+
+
+            <div class="col-4 main-section text-center">
+             
+            </div>
+                   
+
+                    <!-- Column -->
+                   
                 </div>
                 <!-- Row -->
 
+      </div>
+      </div>
       </div>
       <!-- /.container-fluid -->
    
@@ -149,17 +162,13 @@
   </div>
   <!-- /#wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+  
 
   
 
     <% include ./partials/scripts %>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin.min.js"></script>
 
 </body>
 

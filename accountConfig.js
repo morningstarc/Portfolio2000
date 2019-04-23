@@ -54,7 +54,11 @@ function config(app) {
                     }
                     else {
                         const hashedPassword = passwordcrypto.hashPassword(password);
-                        const user = {firstname: req.body.firstname, lastname: req.body.lastname, bio: req.body.bio, email, password: hashedPassword, admin: false};
+                        const image = {
+                                "filename": "user.png",
+                                "size": 530563
+                            }
+                        const user = {firstname: req.body.firstname, lastname: req.body.lastname, bio: req.body.bio, image, email, hashedPassword, admin: false};
                         app.locals.usersCollection.insertOne(user)
                             .then(result => {
                                 return done(null, user, req.flash("flash_message", "Account Creation Successful!"))
