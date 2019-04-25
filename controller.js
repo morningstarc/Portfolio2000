@@ -89,11 +89,6 @@ const imageUpload = multer({
 
 //Home
 app.get('/', (req, res) => {
-    res.render('blank', { user: req.user })
-  
-})
-
-app.get('/home', (req, res) => {
     app.locals.projectsCollection.find().toArray()
         .then(projects => {
             res.render('home', { projects, user: req.user })
@@ -118,7 +113,7 @@ app.get('/login', (req, res) => {
 })
 app.post('/login', accountConfig.passport.authenticate(
     'localLogin', {
-        successRedirect: '/home',
+        successRedirect: '/',
         failureRedirect: '/login',
         failureFlash: true
     }
