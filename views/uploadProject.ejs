@@ -2,7 +2,9 @@
 <html lang="en">
 
     <% include ./partials/header %>
- 
+ <script>
+new Taggle('keywords');
+ </script>
 </head>
 
 <body id="page-top">
@@ -73,8 +75,13 @@
                                          <div class="col-md-12">
                                         <textarea cols="3" type="text" class="form-control" name="description" id="description" placeholder="Project Description"></textarea>
                                     </div></div>
+                                      <div class="form-group">
+                                        <label class="col-md-12" id="keywords" for="keywords">Keywords</label>
+                                         <div class="col-md-12">
+                                        <textarea cols="3" type="text" class="form-control" name="keywords" id="keywords" placeholder="Keywords"></textarea>
+                                    </div></div>
                                     <div class="form-group">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12" >
                                         <input type="hidden" name="_id" value="<%= user._id%>">
                                             <button class="btn btn-info" type="submit">Upload Project</button>
                                         </div>

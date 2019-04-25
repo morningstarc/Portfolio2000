@@ -55,17 +55,6 @@
     background-size: cover;
   }
 
-
-/* .fill img {
-  flex-shrink: 0;
-  min-width: 100%;
-  min-height: 100%
-} */
-
-.flex-item {
-  justify-content: center;
-}
-
 /*profile*/
 
 html * {

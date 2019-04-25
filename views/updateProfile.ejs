@@ -30,7 +30,7 @@
 
     <div id="content-wrapper"> 
 
-      <div class="container-fluid">
+      <div class="container-fluid fill">
 
 
 
@@ -42,7 +42,7 @@
                     <!-- Column -->
                  
 
-            <div class="col-md-5 main-section text-center">
+            <div class="col-md-6 main-section text-center">
                 <div class="row">
                     <div class="col-lg-12 col-sm-12 col-12 profile-header">
                         <h4><%=user.firstname%>  <%=user.lastname%></h4>
@@ -50,9 +50,7 @@
                 </div>
                 <div class="row user-detail">
                     <div class="col-lg-12 col-sm-12 col-12 ">
-                    <%if(user.image.file) {%>
                        <img src="../public/img/<%=user.image.filename%>" class="rounded-circle img-thumbnail">
-                    <%}%>
                         <hr>
 
                         <span><%=user.bio%></span>
