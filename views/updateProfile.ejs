@@ -14,9 +14,28 @@
             }
             return true;
         }
+        // $(document).ready(function () {
+        //   CustomFileInput.init()
+        // })
 
-        
+        function preview_image(event) 
+          {
+          var reader = new FileReader();
+          reader.onload = function()
+          {
+            var output = document.getElementById('output_image');
+            output.src = reader.result;
+          }
+          reader.readAsDataURL(event.target.files[0]);
+          }
     </script>
+<style>
+    #output_image
+      {
+      max-width:300px;
+      max-height: 300px;
+      }
+</style>
 </head>
 
 <body id="page-top">
@@ -30,112 +49,100 @@
 
     <div id="content-wrapper"> 
 
-      <div class="container-fluid fill">
+      <div class="container-fluid">
 
 
 
         <!-- Page Content -->
-       
- 
- <!-- Row -->
-                <div class="row">
-                    <!-- Column -->
-                 
+       <div class="row">
+        <div class="col-md-5 text-center fill">
+                      <div class="biobuttons">
+                        <form action="imageUpload" method="POST" enctype="multipart/form-data">
+                          <div class="custom-file">
+                              <input type="file" class="custom-file-input" name="imageButton" id="file" onchange="preview_image(event)">
+                              <label class="custom-file-label" for="file">Choose file</label>
+                               <button class="btn btn-outline-secondary" type="submit" id="imageButton">Upload</button>
+                            </div>
 
-            <div class="col-md-6 main-section text-center">
-                <div class="row">
-                    <div class="col-lg-12 col-sm-12 col-12 profile-header">
-                        <h4><%=user.firstname%>  <%=user.lastname%></h4>
-                    </div>
-                </div>
-                <div class="row user-detail">
-                    <div class="col-lg-12 col-sm-12 col-12 ">
-                       <img src="../public/img/<%=user.image.filename%>" class="rounded-circle img-thumbnail">
-                        <hr>
+                         <div class="container" style="margin-top: 20px;">
+                         <img id="output_image" class="rounded-circle img-thumbnail"/>
+                         </div>
+               </div>
+              
 
-                        <span><%=user.bio%></span>
-                        
-                    </div>
+
+
+                        </form>
+
+
                 </div>
-                <div class="row user-skills-detail">
-                    <div class="col-lg-12 col-sm-12 col-12">
-                      
-                    </div>
+
+   
+
+    <!--Column-->
+       <div class="col-md-6">
+  <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Update Profile</div>
+      <div class="card-body">
+
+          <form action="/updateProfile" method="POST"  id="updateForm" onsubmit="return validateForm()">
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="text" id="firstname" name="firstname" class="form-control" value="<%=user.firstname%>" required="required">
+                  <label for="firstname">First name</label>
                 </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="text" id="lastName" name="lastname" class="form-control" value="<%=user.lastname%>" required="required">
+                  <label for="lastName">Last name</label>
+                </div>
+              </div>
             </div>
-                   
-
-                    <!-- Column -->
-                    <div class="col-lg-6 col-xlg-9 col-md-7">
-                        <div class="card">
-                            <div class="card-block">
-                                <form class="form-horizontal form-material" action="/updateProfile" method="POST" id="updateForm" onsubmit="return validateForm()">
-                                    <div class="form-group">
-                                        <label class="col-md-12">First Name</label>
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="First Name" class="form-control form-control-line" name="firstname" id="firstname" value="<%= user.firstname%>">
-
-                                        </div>
-                                    </div>
-                                        <div class="form-group">
-                                        <label class="col-md-12">Last Name</label>
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="Last Name" class="form-control form-control-line" name="lastname" id="lastname" value="<%= user.lastname%>">
-
-                                        </div>
-                                    </div>
-                                   <%# <div class="form-group">
-                                        <label for="example-email" class="col-md-12">Email</label>
-                                        <div class="col-md-12">
-                                            <input type="email" placeholder="johnathan@admin.com" class="form-control form-control-line" name="example-email" id="example-email">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-12">Password</label>
-                                        <div class="col-md-12">
-                                            <input type="password" value="password" class="form-control form-control-line">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-12">Phone No</label>
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="123 456 7890" class="form-control form-control-line">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-12">Message</label>
-                                        <div class="col-md-12">
-                                            <textarea rows="5" class="form-control form-control-line"></textarea>
-                                        </div>
-                                    </div>
-                                 %>
-                                  
-                                 <div class="row">
-                                    <div style="display: inline-block; float-left; margin-left: 15px;">
-                                    <div class="form-group">
-                                        <div class="col-sm-12 biobuttons">
-                                        <input type="hidden" name="_id" value="<%= user._id%>">
-                                            <button class="btn btn-info" type="submit">Update Profile</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                </div>
-                                 <div style="display: inline-block; float-right;">
-                                <form action="/delete" method="POST">
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                        <input type="hidden" name="_id" value="<%= user._id%>">
-                                            <button class="btn btn-danger" type="submit">Delete Account</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <input type="text" id="email" name="email" class="form-control" value="<%=user.email%>" required="required">
+              <label for="email">Email address</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <textarea id="bio" name="bio" class="form-control" rows="4" placeholder="Bio"><%=user.bio%></textarea>
+              
+            </div>
+          </div>
+             <div class="row">
+                        <div style="display: inline-block; float-left; margin-left: 15px;">
+                        <div class="form-group">
+                            <div class="col-sm-12 biobuttons">
+                            <input type="hidden" name="_id" value="<%= user._id%>">
+                                <button class="btn btn-info" type="submit">Update Profile</button>
                             </div>
                         </div>
+                    </form>
                     </div>
-                    <!-- Column -->
-                </div>
-                <!-- Row -->
+                        <div style="display: inline-block; float-right;">
+                    <form action="/delete" method="POST">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                            <input type="hidden" name="_id" value="<%= user._id%>">
+                                <button class="btn btn-danger" type="submit">Delete Account</button>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+          
+            
+        </form>
+       </div>
+      </div>
+    </div>
+  </div>
+  </div>
+ 
 
       </div>
       <!-- /.container-fluid -->
@@ -157,7 +164,7 @@
     <% include ./partials/scripts %>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin.min.js"></script>
+  <!-- <script src="../public/js/image.js"></script>-->
 
 </body>
 

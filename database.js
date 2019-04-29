@@ -8,12 +8,14 @@ const dbHost = "localhost";
 const dbPort = 27017;
 const usersCollectionName = "users";
 const projectsCollectionName = "projects";
+const messagesCollectionName = "messages";
 
 const dbURL = `mongodb://${username}:${password}@${dbHost}:${dbPort}?authSource=${dbName}`;
 
 let dbclient;
 let usersCollection;
 let projectsCollection;
+let messagesCollection;
 
 
 function startDBandApp(app, PORT) {
@@ -27,6 +29,8 @@ function startDBandApp(app, PORT) {
             app.locals.usersCollection = usersCollection;
             projectsCollection = client.db(dbName).collection(projectsCollectionName);
             app.locals.projectsCollection = projectsCollection;
+            messagesCollection = client.db(dbName).collection(messagesCollectionName);
+            app.locals.messagesCollection = messagesCollection;
             app.locals.ObjectID = ObjectID;
             app.listen(PORT, () => {
                 console.log(`Server is running at port ${PORT}`);

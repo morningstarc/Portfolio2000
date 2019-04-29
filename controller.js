@@ -89,14 +89,12 @@ const imageUpload = multer({
 
 //Home
 app.get('/', (req, res) => {
-    res.render('home', { user: req.user })
-  
-})
-
-app.get('/home', (req, res) => {
     app.locals.projectsCollection.find().toArray()
         .then(projects => {
-            res.render('home', { projects, user: req.user })
+            res.render('home', {
+                projects,
+                user: req.user
+            })
         })
         .catch(error => {
             console.log(error)
@@ -112,7 +110,8 @@ app.get('/login', (req, res) => {
         })
     } else {
         res.render('login', {
-            flash_message: req.flash('flash_message'), user
+            flash_message: req.flash('flash_message'),
+            user
         })
     }
 })
@@ -131,65 +130,142 @@ app.get('/logout', (req, res) => {
 
 //Search
 app.get('/searchCode', (req, res) => {
-    const kw = req.query._kw
-    app.locals.projectsCollection.find({type: kw}).toArray()
+    const kw = req.query._kw.toLowerCase()
+
+    app.locals.projectsCollection.find({keywords: kw }).toArray()
         .then(projects => {
-            res.render('home', { projects, user: req.user })
+            res.render('home', {
+                projects,
+                user: req.user
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        })
+})
+//Messages
+app.get('/inbox', auth, (req, res) => {
+    const where = "inbox";
+    app.locals.messagesCollection.find({recepient: req.user._id}).toArray()
+        .then(messages => {
+            res.render('messages', {messages, user: req.user, where: where})
         })
         .catch(error => {
             console.log(error)
         })
 })
 
+app.get('/sent', auth, (req, res) => {
+    const where = "sent";
+    app.locals.messagesCollection.find({sender: req.user._id}).toArray()
+        .then(messages => { res.render('messages', { messages, user: req.user, where: where})
+        })
+        .catch(error => {
+            console.log(error)
+        })
+})
+
+app.get('/uploadMessage', auth, (req, res) => {
+    const recepient = database.ObjectID(req.query._id);
+    res.render('uploadMessage', {user: req.user, recepient: recepient})
+})
+
+app.post('/uploadMessage', auth, (req, res) => {
+   const sender = database.ObjectID(req.user._id);
+   const recepient = database.ObjectID(req.body.recepient);
+    app.locals.usersCollection.find({_id: sender}).toArray()
+        .then(user => {
+            senderName = user[0].firstname + " " + user[0].lastname;            
+            console.log(req.body.recepient)
+            const message = {
+                sender: sender,
+                senderName: senderName,
+                recepient: recepient,
+                subject: req.body.subject,
+                message: req.body.message
+            };
+
+            app.locals.messagesCollection.insertOne(message)
+                .then(result => {
+                    res.redirect('/sent')
+                })
+                .catch(error => {
+                    res.render('errorPage', {
+                        message: 'message failed to upload to db'
+                    })
+                })
+        })
+        .catch(error => {
+            console.log(error)
+        })
+ 
+
+})
+
+
+
+
 //Projects
 
 app.get('/projects', (req, res) => {
     const _id = req.query._id;
     const query = database.ObjectID(_id)
-    app.locals.projectsCollection.find({user: query}).toArray()
+    app.locals.projectsCollection.find({
+            user: query
+        }).toArray()
         .then(projects => {
             res.render('projects', {projects, user: req.user})
         })
         .catch(error => {
-          console.log(error)
-         })
+            console.log(error)
+        })
 });
 
 app.get('/uploadProject', auth, (req, res) => {
-    res.render('uploadProject', {user: req.user})
+    res.render('uploadProject', {
+        user: req.user
+    })
 });
 
 app.post('/uploadProject', auth, (req, res) => {
     //upload to database
+    var kw = req.body.keywords.toLowerCase();
+    var keywords = kw.split(" ");
+
     const project = {
         user: req.user._id,
         name: req.body.title,
         type: req.body.type,
         github: req.body.github,
         link: req.body.link,
-        description: req.body.description
+        description: req.body.description,
+        keywords: keywords
     };
 
     app.locals.projectsCollection.insertOne(project)
         .then(result => {
-            app.locals.projectsCollection.find({user: req.user._id}).toArray()
+            app.locals.projectsCollection.find({ user: req.user._id}).toArray()
                 .then(projects => {
-                    res.render('projects', {projects, user: req.user })
+                    res.render('projects', {projects, user: req.user})
                 })
                 .catch(error => {
                     console.log(error)
                 })
         })
         .catch(error => {
-            res.render('errorPage', {message: 'project failed to upload to db'})
+            res.render('errorPage', {
+                message: 'project failed to upload to db'
+            })
         })
-        
+
 })
 
 app.post('/deleteProject', (req, res) => {
     const _id = req.body._id;
 
-    const delquery = {_id: database.ObjectID(_id)};
+    const delquery = {
+        _id: database.ObjectID(_id)
+    };
 
     app.locals.projectsCollection.deleteOne(delquery)
         .then(result => {
@@ -197,7 +273,10 @@ app.post('/deleteProject', (req, res) => {
                     user: req.user._id
                 }).toArray()
                 .then(projects => {
-                    res.render('projects', {projects, user: req.user})
+                    res.render('projects', {
+                        projects,
+                        user: req.user
+                    })
                 })
                 .catch(error => {
                     console.log(error)
@@ -213,15 +292,20 @@ app.post('/deleteProject', (req, res) => {
 });
 
 app.get('/updateProject', (req, res) => {
-     const _id = req.body._id
-     app.locals.projectsCollection.find({_id: database.ObjectID(_id)}).toArray()
-         .then(projects => {
-             if (projects.length != 1) {
-                 throw `Found ${projects.length} projects for EDIT`
-             }
-             res.render("updateProject", {project: projects[0], user: req.user})
-         })
-         .catch(error => {console.log(error)});
+    const _id = req.query._id
+    app.locals.projectsCollection.find({_id: database.ObjectID(_id)}).toArray()
+        .then(projects => {
+            if (projects.length != 1) {
+                throw `Found ${projects.length} projects for EDIT`
+            }
+            res.render("updateProject", {
+                project: projects[0],
+                user: req.user
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        });
 })
 
 app.post('/updateProject', auth, (req, res) => {
@@ -231,54 +315,106 @@ app.post('/updateProject', auth, (req, res) => {
     const github = req.body.github
     const link = req.body.link
     const description = req.body.description
-    const newValue = {$set: {name, type, github, link, description}}
-    const query = {_id: app.locals.ObjectID(_id)}
+    const newValue = {
+        $set: {
+            name,
+            type,
+            github,
+            link,
+            description
+        }
+    }
+    const query = {
+        _id: app.locals.ObjectID(_id)
+    }
     app.locals.projectsCollection.updateOne(query, newValue)
         .then(result => {
-            
-             app.locals.projectsCollection.find({user: req.user._id}).toArray()
-                 .then(projects => {
-                     res.render('projects', {projects, user: req.user})
-                 })
-                 .catch(error => {
-                     console.log(error)
-                 })
+
+            app.locals.projectsCollection.find({
+                    user: req.user._id
+                }).toArray()
+                .then(projects => {
+                    res.render('projects', {
+                        projects,
+                        user: req.user
+                    })
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         })
-        .catch(error => {error })
+        .catch(error => {
+            error
+        })
 });
 
 //Profile
 app.get('/user', (req, res) => {
     const _id = req.query._id
-    app.locals.usersCollection.find({_id: database.ObjectID(_id)}).toArray()
+    app.locals.usersCollection.find({
+            _id: database.ObjectID(_id)
+        }).toArray()
         .then(foundUsers => {
             if (foundUsers.length != 1) {
                 throw `Found ${foundUsers.length} users for EDIT`
             }
-            if(req.user){
-                res.render("user", {fu: foundUsers[0], user: req.user})
-            }else{
-                res.render("user", {fu: foundUsers[0]})
+            if (req.user) {
+                res.render("user", {
+                    fu: foundUsers[0],
+                    user: req.user
+                })
+            } else {
+                res.render("user", {
+                    fu: foundUsers[0]
+                })
             }
         })
-        .catch(error => {console.log(error)});
+        .catch(error => {
+            console.log(error)
+        });
+});
+app.get('/profile', (req, res) => {
+    const _id = req.user._id
+    app.locals.usersCollection.find({
+        _id: database.ObjectID(_id)
+    }).toArray()
+        .then(foundUsers => {
+            if (foundUsers.length != 1) {
+                throw `Found ${foundUsers.length} users for EDIT`
+            }
+            if (req.user) {
+                res.render("user", {
+                    fu: foundUsers[0],
+                    user: req.user
+                })
+            } else {
+                res.render("user", {
+                    fu: foundUsers[0]
+                })
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        });
 });
 
 
 
-
 app.get('/updateProfile', (req, res) => {
-        const _id = req.query._id
-        app.locals.usersCollection.find({_id: database.ObjectID(_id)}).toArray()
-            .then(users => {
-                if (users.length != 1) {
-                    throw `Found ${users.length} users for EDIT`
-                }
-                res.render("updateProfile", {user: users[0]})
-                //res.render("errorPage", {source: "/admin/update", error})
+    const _id = req.query._id
+    app.locals.usersCollection.find({
+            _id: database.ObjectID(_id)
+        }).toArray()
+        .then(users => {
+            if (users.length != 1) {
+                throw `Found ${users.length} users for EDIT`
+            }
+            res.render("updateProfile", {
+                user: users[0]
             })
-            .catch(error => {
-            });
+            //res.render("errorPage", {source: "/admin/update", error})
+        })
+        .catch(error => {});
 });
 
 app.post('/updateProfile', auth, (req, res) => {
@@ -286,8 +422,15 @@ app.post('/updateProfile', auth, (req, res) => {
     const firstname = req.body.firstname
     const lastname = req.body.lastname
 
-    const newValue = {$set: {firstname, lastname}}
-    const query = {_id: app.locals.ObjectID(_id)}
+    const newValue = {
+        $set: {
+            firstname,
+            lastname
+        }
+    }
+    const query = {
+        _id: app.locals.ObjectID(_id)
+    }
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
             res.redirect('/user')
@@ -300,7 +443,9 @@ app.post('/updateProfile', auth, (req, res) => {
 app.post('/delete', auth, (req, res) => {
     const _id = req.body._id
 
-    const query = {_id: app.locals.ObjectID(_id)}
+    const query = {
+        _id: app.locals.ObjectID(_id)
+    }
     req.logout();
     app.locals.usersCollection.deleteOne(query)
         .then(result => {
@@ -329,14 +474,18 @@ app.post('/imageUpload', auth, (req, res) => {
             filename: req.file.filename,
             size: req.file.size
         }
-        const newValue = { $set: { image } }
+        const newValue = {
+            $set: {
+                image
+            }
+        }
         const _id = req.user._id;
         const query = {
             _id: app.locals.ObjectID(_id)
         }
         app.locals.usersCollection.findOneAndUpdate(query, newValue)
             .then(result => {
-                res.render('updateProfile', { user: req.user })
+               res.redirect('/profile')
             })
             .catch(error => {
                 res.render('errorPage', {
@@ -375,30 +524,44 @@ app.post('deleteImage', auth, (req, res) => {
 
 //Registration
 app.get('/register', (req, res) => {
-    res.render('register', {flash_message: req.flash("flash_message")});
+    res.render('register', {
+        flash_message: req.flash("flash_message")
+    });
 });
 
 app.post('/register', accountConfig.passport.authenticate(
-    'signupStrategy',
-    {successRedirect: '/', failureRedirect: '/register', failureFlash: true}
+    'signupStrategy', {
+        successRedirect: '/',
+        failureRedirect: '/register',
+        failureFlash: true
+    }
 ));
 
 //Admin Features
 app.get('/userList', adminAuth, (req, res) => {
     app.locals.usersCollection.find({}).toArray()
         .then(users => {
-            res.render('userList', {users, user: req.user})
+            res.render('userList', {
+                users,
+                user: req.user
+            })
         })
         .catch(error => {
-          console.log(error)
-         })
+            console.log(error)
+        })
 });
 
 app.post('/adminResetPassword', adminAuth, (req, res) => {
     const _id = req.body._id
-    
-    const newValue = {$set: {password: passwordcrypto.hashPassword("password")}}
-    const query = {_id: app.locals.ObjectID(_id)}
+
+    const newValue = {
+        $set: {
+            password: passwordcrypto.hashPassword("password")
+        }
+    }
+    const query = {
+        _id: app.locals.ObjectID(_id)
+    }
 
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
@@ -412,7 +575,9 @@ app.post('/adminResetPassword', adminAuth, (req, res) => {
 app.post('/adminDelete', adminAuth, (req, res) => {
     const _id = req.body._id
 
-    const query = {_id: app.locals.ObjectID(_id)}
+    const query = {
+        _id: app.locals.ObjectID(_id)
+    }
     app.locals.usersCollection.deleteOne(query)
         .then(result => {
             res.redirect('/userList')

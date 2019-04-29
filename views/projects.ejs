@@ -21,8 +21,9 @@
 
 
         <!-- Page Content -->
-        <!-- Icon Cards-->
-        <div class="row">
+       
+       
+   <div class="row">
         <% for (const project of projects) {%>
           <div class="col-xl-4 col-sm-6 mb-4">
             <div class="card text-white bg-info o-hidden h-100">
@@ -33,48 +34,47 @@
                 </div>
               <div class="card-body">
                  
-                <i class="fas fa-info-circle"></i> Type: <%= project.type%><br />
-                <i class="fab fa-github-square"></i> github: <%= project.github%><br />
-                <i class="fas fa-link"></i> Link: <%= project.link%><br />
-                <i class="fas fa-code"></i> Description: <%= project.description%></span>
-                
-             
-                
+                <i class="fas fa-info-circle"></i> <span style="font-weight: 700;"> Type: </span><%= project.type%><br />
+                <i class="fab fa-github-square"></i> <span style="font-weight: 700;">github:</span> <%= project.github%><br />
+                <i class="fas fa-link"></i> <span style="font-weight: 700;">Link:</span> <%= project.link%><br />
+                <i class="fas fa-code"></i> <span style="font-weight: 700;">Description:</span> <%= project.description%>
+                         
               </div>
               <div class="card-footer bg-white">
-                <div class="row">
-                <% if (isAuthenticated) { %> 
-                  <%if(project.user == user._id) {%> 
-                    <div class="col-md-4" style="display: inline-block;">
-                      <form action="deleteProject" method="POST">
-                        <input type="hidden" name="_id" value="<%= project._id%>">
-                        <button type="sumbit" class="btn btn-danger btn-sm" role="button">Delete</button>
-                      </form>
-                    </div>
-                    <div class="col-md-4"></div>
-                      <div style="display: inline-block;">
-                        <form action="updateProject" method="POST">
-                          <input type="hidden" name="_id" value="<%= project._id%>">
-                          <button type="sumbit" class="btn btn-warning btn-sm" role="button">Edit</a>
-                        </form>
-                      </div>
-                    </div>
-                     <% } %>
-                    <% } else {%>
-                    <div class="col-md-4"></div>
-                      <div style="display: inline-block;">
-                       <a href="/user?_id=<%=project.user%>" class="btn btn-sm btn-info" role="button">View Profile</a>
-                      </div>
-                    </div>
-                   
-                  <% } %>
+                <div class="biobuttons" >
+                
+                        <a href="/user?_id=<%=project.user%>" class="btn btn-sm btn-info" role="button">View Profile</a>
+                         <% if (isAuthenticated) { %> 
+                       
+                         <%if(project.user.equals(user._id)) {%> 
+                         <div style="display: inline-block;">
+                            <form action="deleteProject" method="POST">
+                              <input type="hidden" name="_id" value="<%= project._id%>">
+                              <button type="sumbit" class="btn btn-danger btn-sm" role="button">Delete</button>
+                            </form>
+                            </div>
+                            <div style="display: inline-block;">
+                                <a href="/updateProject?_id=<%=project._id%>" class="btn btn-warning btn-sm" role="button">Edit</a>
+                              </div>
+                         <%} else {%>
+                          <div style="display: inline-block;">
+                          <a href="/uploadMessage?<%=project.user%>" class="btn btn-warning btn-sm">Send Message</a>
+                          </div>
+                         <%}%>
+                      <%}%>
+                    
                   </div>
-              
+                  
+                  </div>
               </div>
           </div>
-        
-         <% } %>
+        <% } %>
+         
       </div>
+
+
+
+
       <!-- /.container-fluid -->
    
     <% include ./partials/footer %>
