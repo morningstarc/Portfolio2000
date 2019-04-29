@@ -9,19 +9,14 @@
 
     <% include ./partials/nav %>
 
-<<<<<<< HEAD
   <div id="wrapper">
 
-=======
-  <div id="wrapper" class="fill">
->>>>>>> Sprint2
 
     <% include ./partials/sidenav %>
 
 
     <div id="content-wrapper"> 
 
-<<<<<<< HEAD
       <div class="container-fluid">
 
 
@@ -51,7 +46,7 @@
                         <a href="/user?_id=<%=project.user%>" class="btn btn-sm btn-info" role="button">View Profile</a>
                         <a href="/projects?_id=<%=project.user%>" class="btn btn-success btn-sm">View Portfolio</a>
                          <% if (isAuthenticated) { %> 
-                        <a href="/message?_id=<%=project.user%>" class="btn btn-warning btn-sm">Send Message</a>
+                        <a href="/uploadMessage?_id=<%=project.user%>" class="btn btn-warning btn-sm">Send Message</a>
                         
                       <%}%>
                     
@@ -66,16 +61,6 @@
       <!-- /.container-fluid -->
 
        
-=======
-      <div class="container-fluid flex-item">
-        <!-- Page Content -->
-        
-         <img src="./public/img/logo.png">
-     
-     
-     
-      </div><!-- /.container-fluid -->
->>>>>>> Sprint2
    
     <% include ./partials/footer %>
     </div>
