@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<% include ./partials/header %>
+
+</head>
+
+<body id="page-top">
+
+    <% include ./partials/nav %>
+
+    <div id="wrapper">
+
+        <% include ./partials/sidenav %>
+
+
+        <div id="content-wrapper">
+            <!-- background image -->
+
+            <div class="container-fluid">
+             <!-- Page Content -->
+<div class="row">
+                    <!-- column -->
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Messages - <%if(where == "inbox") {%> Inbox <%} else { %> Outbox <% } %>  </h4>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                               
+                                                <th>From</th>
+                                                <th>Title</th>
+                                                <th>Message</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% for(const message of messages) { %>
+                                            <tr>
+                                                <td><%= message.senderName %></th>
+                                                <td><%= message.subject %></td>
+                                                <td><%= message.message %></td>
+                                            </tr>
+                                        <%}%>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+               
+                
+       
+ 
+
+      </div>
+      <!-- /.container-fluid -->
+   
+    <% include ./partials/footer %>
+            </div>
+            <!-- /.content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+      
+
+
+
+        <% include ./partials/scripts %>
+
+
+</body>
+
+</html>

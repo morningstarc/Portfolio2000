@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <% include ./partials/header %>
+ 
+
+</head>
+
+<body id="page-top">
+
+    <% include ./partials/nav %>
+
+  <div id="wrapper">
+
+    <% include ./partials/sidenav %>
+
+
+    <div id="content-wrapper"> 
+
+      <div class="container-fluid">
+
+
+
+        <!-- Page Content -->
+
+  <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Send a Message</div>
+      <div class="card-body">
+                    
+          <form action="/uploadMessage" method="POST">
+          <div class="form-group">
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject" required="required">
+                  <label for="subject">Subject</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <textarea rows="3" id="message" name="message" class="form-control" placeholder="Message Text" required="required"></textarea>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+          
+            <input type="hidden" name="recepient" value="<%=recepient%>">
+            <button type="submit" class="btn btn-secondary">Send Message</button>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+
+     
+      </div>
+      <!-- /.container-fluid -->
+   
+    <% include ./partials/footer %>
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  
+
+    <% include ./partials/scripts %>
+
+  <!-- Custom scripts for all pages-->
+
+</body>
+
+</html>
