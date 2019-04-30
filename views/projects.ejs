@@ -46,7 +46,7 @@
                         <a href="/user?_id=<%=project.user%>" class="btn btn-sm btn-info" role="button">View Profile</a>
                          <% if (isAuthenticated) { %> 
                        
-                         <%if(project.user.equals(user._id)) {%> 
+                         <%if(project.user.equals(user._id) || user.admin) {%> 
                          <div style="display: inline-block;">
                             <form action="deleteProject" method="POST">
                               <input type="hidden" name="_id" value="<%= project._id%>">
