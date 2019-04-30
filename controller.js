@@ -134,7 +134,7 @@ app.get('/searchCode', (req, res) => {
 
     app.locals.projectsCollection.find({keywords: kw }).toArray()
         .then(projects => {
-            res.render('home', {
+            res.render('projects', {
                 projects,
                 user: req.user
             })
@@ -418,14 +418,18 @@ app.get('/updateProfile', (req, res) => {
 });
 
 app.post('/updateProfile', auth, (req, res) => {
-    const _id = req.body._id
+    const _id = req.query._id
     const firstname = req.body.firstname
     const lastname = req.body.lastname
+    const bio = req.body.bio
+    const email = req.body.email
 
     const newValue = {
         $set: {
             firstname,
-            lastname
+            lastname, 
+            bio, 
+            email
         }
     }
     const query = {
@@ -433,7 +437,7 @@ app.post('/updateProfile', auth, (req, res) => {
     }
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
-            res.redirect('/user')
+            res.redirect('/profile')
         })
         .catch(error => {
             //error
@@ -565,7 +569,7 @@ app.post('/adminResetPassword', adminAuth, (req, res) => {
 
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
-            res.redirect('/home')
+            res.redirect('/projects')
         })
         .catch(error => {
             //error

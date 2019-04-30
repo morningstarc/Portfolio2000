@@ -33,6 +33,7 @@
                                                 <th>From</th>
                                                 <th>Title</th>
                                                 <th>Message</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -41,6 +42,11 @@
                                                 <td><%= message.senderName %></th>
                                                 <td><%= message.subject %></td>
                                                 <td><%= message.message %></td>
+                                                <td>
+                                                <%if(where == "inbox") {%> 
+                                                <a href="/uploadMessage?<%=message.sender%>" class="btn btn-warning btn-sm">Reply</a>
+                                                <%}%>
+                                                </td>
                                             </tr>
                                         <%}%>
                                         </tbody>
