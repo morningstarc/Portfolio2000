@@ -517,31 +517,6 @@ app.post('/imageUpload', auth, (req, res) => {
 
 
 
-const fs = require('fs')
-
-app.post('deleteImage', auth, (req, res) => {
-    app.locals.imageCollection.deleteOne({
-            _id: app.locals.ObjectID(req.body._id)
-        })
-        .then(result => {
-            const filename = req.body.filename
-            fs.unlink('./public/images/' + filename, (error) => {
-                if (error) {
-                    res.render('admin/errorPage', {
-                        message: 'cant delete image'
-                    })
-                } else {
-                    res.redirect('/admin/home')
-                }
-            })
-        })
-        .catch(error => {
-            res.render('admin/errorPage', {
-                message: 'error deleting image DB'
-            })
-        })
-})
-
 //Registration
 app.get('/register', (req, res) => {
     res.render('register', {
