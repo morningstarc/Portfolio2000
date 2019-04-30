@@ -34,6 +34,7 @@
                     </thead>
                     <tbody>
                         <% for(const displayUser of users) { %>
+                            <% if (!displayUser.admin) { %>
                         <tr>
                             <th scope="row"><%= displayUser.email %></th>
                             <td><%= displayUser.firstname %></td>
@@ -58,6 +59,7 @@
                                 </form>
                             </td>
                         </tr>
+                        <%}%>
                         <%}%>
             </tbody>
           </table>
