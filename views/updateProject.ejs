@@ -26,21 +26,11 @@
                 <div class="row">
                     <!-- Column -->
                      
-                    <div class="col-lg-4 col-xlg-3 col-md-5">
-                        <div class="card">
-                            <div class="card-block">
-                                <center class="m-t-30"> 
-                                    <h4 class="card-title m-t-10"><%user.firstname%>  <%user.lastname%></h4>
-                                    <div class="row text-center justify-content-md-center">
-                                    </div>
-                                </center>
-                            </div>
-                        </div>
-                    </div>
+           
                     
                     <!-- Column -->
                     <!-- Column -->
-                    <div class="col-lg-8 col-xlg-9 col-md-7">
+                    <div class="col-lg-8 col-xlg-9 col-md-7 offset-2">
                         <div class="card">
                             <div class="card-block">
                                 <form class="form-horizontal form-material" action="/updateProject" method="POST" id="updateProject">
@@ -82,11 +72,12 @@
                                     <div class="form-group">
                                         <div class="col-sm-12">
                                         <input type="hidden" name="_id" value="<%= project._id%>">
-                                            <button class="btn btn-info" type="submit">Update Project</button>
+                                            <button class="btn btn-warning" type="submit">Update Project</button>
+                                             </form>
                                         </div>
                                     </div>
                                     
-                                </form>
+                               
                             </div>
                         </div>
                     </div>

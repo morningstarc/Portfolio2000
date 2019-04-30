@@ -91,7 +91,7 @@ const imageUpload = multer({
 app.get('/', (req, res) => {
     app.locals.projectsCollection.find().toArray()
         .then(projects => {
-            res.render('home', {
+            res.render('projects', {
                 projects,
                 user: req.user
             })
