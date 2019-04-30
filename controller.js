@@ -143,6 +143,22 @@ app.get('/searchCode', (req, res) => {
             console.log(error)
         })
 })
+
+app.post('/searchBar', (req, res) => {
+    const kw = req.body.kw.toLowerCase()
+
+    app.locals.projectsCollection.find({ keywords: kw }).toArray()
+        .then(projects => {
+            res.render('projects', {
+                projects,
+                user: req.user
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        })
+})
+
 //Messages
 app.get('/inbox', auth, (req, res) => {
     const where = "inbox";
