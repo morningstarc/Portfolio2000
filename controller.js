@@ -560,7 +560,7 @@ app.post('/adminResetPassword', adminAuth, (req, res) => {
 
     app.locals.usersCollection.updateOne(query, newValue)
         .then(result => {
-            res.redirect('/projects')
+            res.redirect('/')
         })
         .catch(error => {
             //error
